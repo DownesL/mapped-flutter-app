@@ -1,0 +1,201 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:mapped/models/event.dart';
+import 'package:mapped/models/mapped_user.dart';
+import 'package:mapped/models/search_options.dart';
+import 'package:mapped/pages/calendar_overview_page.dart';
+import 'package:mapped/pages/discover_overview_page.dart';
+import 'package:mapped/pages/map_overview_page.dart';
+import 'package:mapped/widgets/macros/account_view.dart';
+import 'package:mapped/widgets/mediors/event_sheet.dart';
+import 'package:mapped/widgets/mediors/search_bar.dart';
+import 'package:mapped/widgets/mediors/top_bar.dart';
+import 'package:mapped/widgets/mediors/user_sheet.dart';
+import 'package:mapped/widgets/micros/account_drawer_button.dart';
+import 'package:provider/provider.dart';
+import 'package:screenshot_callback/screenshot_callback.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class NavigationContainer extends StatefulWidget {
+  const NavigationContainer({
+    super.key,
+    this.givenIndex,
+    this.event,
+    this.user,
+  });
+
+  final int? givenIndex;
+  final Event? event;
+  final MappedUser? user;
+
+  @override
+  State<NavigationContainer> createState() => _NavigationContainerState();
+}
+
+class _NavigationContainerState extends State<NavigationContainer> {
+  late int _selectedIndex = 0;
+
+  bool buttonOverlayOpen = false;
+  SearchOptions searchOptions = SearchOptions();
+
+  setSelectedIndex(int i) {
+    _selectedIndex = i;
+    setState(() {});
+  }
+
+  late MappedUser mappedUser;
+
+  void redirectIfNotLoggedIn(User? user) {
+    if (user == null) {
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    } else {
+      var mUser = context.read<MappedUser>();
+      if (mUser.labels == null) {
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/sign_up/2', (route) => false);
+        }
+      } else {
+        print('User is signed in!');
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    FirebaseAuth.instance.authStateChanges().listen(redirectIfNotLoggedIn);
+    mappedUser = context.read<MappedUser>();
+    if (widget.event != null) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => showModalBottomSheet<void>(
+          showDragHandle: true,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          barrierColor: Colors.transparent,
+          barrierLabel: "Event",
+          isScrollControlled: true,
+          constraints:
+              BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * .5),
+          context: context,
+          builder: (BuildContext context) {
+            return EventSheet(
+              event: widget.event!,
+            );
+          },
+        ),
+      );
+    }
+    if (widget.user != null) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => showModalBottomSheet<void>(
+          showDragHandle: true,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          barrierColor: Colors.transparent,
+          barrierLabel: "User",
+          isScrollControlled: true,
+          constraints:
+              BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height * .5),
+          context: context,
+          builder: (BuildContext context) {
+            return UserSheet(
+              mappedUser: widget.user!,
+            );
+          },
+        ),
+      );
+    }
+
+    _selectedIndex = widget.givenIndex ?? 0;
+    super.initState();
+    init();
+  }
+
+  late ScreenshotCallback screenshotCallback;
+
+  void init() async {
+    await initScreenshotCallback();
+  }
+  Future<void> initScreenshotCallback() async {
+    screenshotCallback = ScreenshotCallback();
+
+    screenshotCallback.addListener(() async {
+      await launchUrl(Uri.parse("https://youtu.be/dQw4w9WgXcQ?si=L3dzOgjY8fitf7RN"));
+    });
+  }
+  @override
+  void dispose() {
+    screenshotCallback.dispose();
+    super.dispose();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider.value(
+      value: searchOptions,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: [
+            const Size.fromHeight(80),
+            const Size.fromHeight(60),
+            const Size.fromHeight(80),
+            const Size.fromHeight(60),
+          ][_selectedIndex],
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.red,
+            title: [
+              Container(),
+              const TopBar(title: "Calender Overview"),
+              Container(),
+              const TopBar(title: "Account"),
+            ][_selectedIndex],
+            flexibleSpace: [
+              const TopSearchBar(),
+              Container(),
+              const TopSearchBar(),
+              Container(),
+            ][_selectedIndex],
+            forceMaterialTransparency: true,
+            actions: [Container()],
+          ),
+        ),
+        extendBodyBehindAppBar: [true, false, true, false][_selectedIndex],
+        resizeToAvoidBottomInset: false,
+        body: <Widget>[
+          MapOverviewPage(
+            event: widget.event,
+          ),
+          CalendarOverviewPage(
+            mappedUser: mappedUser,
+          ),
+          const DiscoverOverviewPage(),
+          const AccountView(),
+        ][_selectedIndex],
+        bottomNavigationBar: searchOptions.term != null &&
+                searchOptions.term!.isEmpty
+            ? null
+            : BottomNavigationBar(
+                currentIndex: _selectedIndex,
+                showUnselectedLabels: true,
+                unselectedItemColor: Colors.black54,
+                selectedItemColor: Theme.of(context).primaryColor,
+                selectedIconTheme: const IconThemeData(
+                  size: 32,
+                ),
+                onTap: setSelectedIndex,
+                items: const [
+                  BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.calendar_today), label: 'Calendar'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.explore), label: 'Discover'),
+                  BottomNavigationBarItem(
+                    label: "Account",
+                    icon: AccountDrawerButton(),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1048070737136",
+    "firebase_url": "https://mapped-a154a-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "mapped-a154a",
+    "storage_bucket": "mapped-a154a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048070737136:android:8a5187586a11cfeb720635",
+        "android_client_info": {
+          "package_name": "com.example.mapped"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048070737136-e9729d3thhbacrragvhsktqq8ofkjcug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZuefDYXqWYwtqk508loqPSiPCb_2nq2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048070737136-e9729d3thhbacrragvhsktqq8ofkjcug.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1048070737136-aegj5988dqmsmue4lp4i9l1lq9q5cuus.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.labo4"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
