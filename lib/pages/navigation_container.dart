@@ -35,6 +35,8 @@ class NavigationContainer extends StatefulWidget {
 class _NavigationContainerState extends State<NavigationContainer> {
   late int _selectedIndex = 0;
 
+  late Event? eventFromWidget;
+
   bool buttonOverlayOpen = false;
   SearchOptions searchOptions = SearchOptions();
 
@@ -63,9 +65,10 @@ class _NavigationContainerState extends State<NavigationContainer> {
 
   @override
   void initState() {
+    eventFromWidget = widget.event;
     FirebaseAuth.instance.authStateChanges().listen(redirectIfNotLoggedIn);
     mappedUser = context.read<MappedUser>();
-    if (widget.event != null) {
+    if (eventFromWidget != null) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => showModalBottomSheet<void>(
           showDragHandle: true,
@@ -78,7 +81,7 @@ class _NavigationContainerState extends State<NavigationContainer> {
           context: context,
           builder: (BuildContext context) {
             return EventSheet(
-              event: widget.event!,
+              event: eventFromWidget!,
             );
           },
         ),
@@ -114,19 +117,21 @@ class _NavigationContainerState extends State<NavigationContainer> {
   void init() async {
     await initScreenshotCallback();
   }
+
   Future<void> initScreenshotCallback() async {
     screenshotCallback = ScreenshotCallback();
 
     screenshotCallback.addListener(() async {
-      await launchUrl(Uri.parse("https://youtu.be/dQw4w9WgXcQ?si=L3dzOgjY8fitf7RN"));
+      await launchUrl(
+          Uri.parse("https://youtu.be/dQw4w9WgXcQ?si=L3dzOgjY8fitf7RN"));
     });
   }
+
   @override
   void dispose() {
     screenshotCallback.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -163,12 +168,14 @@ class _NavigationContainerState extends State<NavigationContainer> {
         resizeToAvoidBottomInset: false,
         body: <Widget>[
           MapOverviewPage(
-            event: widget.event,
+            event: eventFromWidget,
           ),
           CalendarOverviewPage(
             mappedUser: mappedUser,
           ),
-          const DiscoverOverviewPage(),
+          DiscoverOverviewPage(
+            event: eventFromWidget,
+          ),
           const AccountView(),
         ][_selectedIndex],
         bottomNavigationBar: searchOptions.term != null &&

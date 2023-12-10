@@ -86,6 +86,7 @@ main() {
               address: Address(),
               attendeeIDs: [],
               organiserIDs: [],
+              pictureList: [],
               eventType: EventType.public,
               description: "",
               latLng: const LatLng(12.0, 12.0))

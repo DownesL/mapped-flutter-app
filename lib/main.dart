@@ -38,7 +38,12 @@ Future<void> main() async {
 }
 
 Future<void> requestPermission() async {
-  const permissions = [Permission.camera, Permission.location, Permission.manageExternalStorage, Permission.photos];
+  const permissions = [
+    Permission.camera,
+    Permission.location,
+    Permission.manageExternalStorage,
+    Permission.photos
+  ];
   for (var permission in permissions) {
     if (await permission.isDenied) {
       await permission.request();
@@ -63,7 +68,6 @@ class Mapped extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -108,6 +112,11 @@ class Mapped extends StatelessWidget {
             user: (ModalRoute.of(context)!.settings.arguments as UserArguments)
                 .mUser),
         '/calendar': (context) => const NavigationContainer(givenIndex: 1),
+        '/discover/event': (context) => NavigationContainer(
+            givenIndex: 2,
+            event:
+                (ModalRoute.of(context)!.settings.arguments as EventArguments)
+                    .event),
         '/account': (context) => const NavigationContainer(givenIndex: 3),
         '/account/edit': (context) => const AccountPage(),
         '/make_event/public': (context) => const MakeEventPage(

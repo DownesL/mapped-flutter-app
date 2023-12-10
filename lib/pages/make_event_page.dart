@@ -510,6 +510,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
         address: _address!,
         attendeeIDs: [user.uid],
         organiserIDs: [user.uid],
+        pictureList: [],
         eventType: widget.eventType,
         description: descriptionController.text,
         latLng: _latLng!,

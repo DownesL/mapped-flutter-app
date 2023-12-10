@@ -17,9 +17,11 @@ import 'package:provider/provider.dart';
 import '../utils.dart';
 
 class MapOverviewPage extends StatefulWidget {
-  const MapOverviewPage({super.key, this.event});
+  const MapOverviewPage({super.key, this.event, this.discoverPage = false});
 
   final Event? event;
+
+  final bool discoverPage;
 
   @override
   State<MapOverviewPage> createState() => _MapOverviewPageState();
@@ -97,6 +99,7 @@ class _MapOverviewPageState extends State<MapOverviewPage>
             ),
             EventMarkerLayer(
               extraEvents: widget.event != null ? [widget.event!] : null,
+              onlyPublicEvents: widget.discoverPage,
             ),
             const RichAttributionWidget(
               showFlutterMapAttribution: false,

@@ -295,4 +295,22 @@ class FirebaseService {
               .toList(),
         );
   }
+
+  Future<List<Event>?> getPublicEvents(
+    MappedUser mUser, {
+    int? limit,
+  }) async {
+    var db = FirebaseFirestore.instance
+        .collection('events')
+        .where("event_type", isEqualTo: EventType.public.number)
+        .where("end_date", isGreaterThanOrEqualTo: DateTime.now());
+    if (limit != null) {
+      db = db.limit(limit);
+    }
+    return await db.get().then((querySnapshot) {
+      return querySnapshot.docs.map((e) {
+        return Event.fromFirestore(e, null);
+      }).toList();
+    });
+  }
 }

@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mapped/firebase_service.dart';
+import 'package:mapped/image_util.dart';
 import 'package:mapped/models/labels.dart';
 import 'package:mapped/models/mapped_user.dart';
 import 'package:mapped/utils.dart';
@@ -29,8 +28,8 @@ class _AccountPageState extends State<AccountPage> {
   late Labels newLabels;
   String? errorMessage;
 
-
   var fS = FirebaseService();
+  var iU = ImageUtil();
 
   List<XFile>? _mediaFileList;
   late User user;
@@ -47,27 +46,6 @@ class _AccountPageState extends State<AccountPage> {
   final nameController = TextEditingController();
   final locationController = TextEditingController();
 
-  Future<void> _displayPickImageDialog(
-      BuildContext context, OnPickImageCallback onPick) async {
-    return onPick(null, null, null);
-  }
-
-  void _setImageFileListFromFile(XFile? value) {
-    _mediaFileList = value == null ? null : <XFile>[value];
-  }
-
-  Widget _handlePreview() {
-    if (isVideo) {
-      return const Dialog(
-        child: AlertDialog(
-          title: Text("FILE FORMAT NOT ALLOWED"),
-        ),
-      );
-    } else {
-      return _previewImages();
-    }
-  }
-
   Future<void> retrieveLostData() async {
     final LostDataResponse response = await _picker.retrieveLostData();
     if (response.isEmpty) {
@@ -80,7 +58,7 @@ class _AccountPageState extends State<AccountPage> {
         isVideo = false;
         setState(() {
           if (response.files == null) {
-            _setImageFileListFromFile(response.file);
+            _mediaFileList = iU.setImageFileListFromFile(response.file);
           } else {
             _mediaFileList = response.files;
           }
@@ -91,48 +69,12 @@ class _AccountPageState extends State<AccountPage> {
     }
   }
 
-  Text? _getRetrieveErrorWidget() {
-    if (_retrieveDataError != null) {
-      final Text result = Text(_retrieveDataError!);
-      _retrieveDataError = null;
-      return result;
-    }
-    return null;
-  }
-
-  Widget _previewImages() {
-    final Text? retrieveError = _getRetrieveErrorWidget();
-    if (retrieveError != null) {
-      return retrieveError;
-    }
-    if (_mediaFileList != null) {
-      return Semantics(
-          label: 'image_picker_example_picked_images',
-          child: ClipOval(
-            clipBehavior: Clip.hardEdge,
-            child: Image(
-              image: FileImage(File(_mediaFileList!.last.path)),
-              width: 100,
-              height: 100,
-              fit: BoxFit.cover,
-            ),
-          ));
-    } else if (_pickImageError != null) {
-      return Text(
-        'Pick image error: $_pickImageError',
-        textAlign: TextAlign.center,
-      );
-    } else {
-      return const ProfilePic(size: 100);
-    }
-  }
-
   Future<void> _onImageButtonPressed(
     ImageSource source, {
     required BuildContext context,
   }) async {
     if (context.mounted) {
-      await _displayPickImageDialog(context,
+      await iU.displayPickImageDialog(context,
           (double? maxWidth, double? maxHeight, int? quality) async {
         try {
           final XFile? pickedFile = await _picker.pickImage(
@@ -142,7 +84,7 @@ class _AccountPageState extends State<AccountPage> {
             imageQuality: quality,
           );
           setState(() {
-            _setImageFileListFromFile(pickedFile);
+            iU.setImageFileListFromFile(pickedFile);
           });
         } catch (e) {
           setState(() {
@@ -155,7 +97,6 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -175,7 +116,9 @@ class _AccountPageState extends State<AccountPage> {
           ),
           child: Column(
             children: [
-              const SizedBox(height: 16.0,),
+              const SizedBox(
+                height: 16.0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -192,7 +135,13 @@ class _AccountPageState extends State<AccountPage> {
                                   textAlign: TextAlign.center,
                                 );
                               case ConnectionState.done:
-                                return _handlePreview();
+                                return iU.handlePreview(
+                                      isVideo,
+                                      _mediaFileList,
+                                      _retrieveDataError,
+                                      _pickImageError,
+                                    ) ??
+                                    ProfilePic(size: 100);
                               case ConnectionState.active:
                                 if (snapshot.hasError) {
                                   return Text(
@@ -208,7 +157,13 @@ class _AccountPageState extends State<AccountPage> {
                             }
                           },
                         )
-                      : _handlePreview(),
+                      : iU.handlePreview(
+                            isVideo,
+                            _mediaFileList,
+                            _retrieveDataError,
+                            _pickImageError,
+                          ) ??
+                          ProfilePic(size: 100),
                   ElevatedButton.icon(
                     icon: const Icon(
                       Icons.camera_alt_outlined,
@@ -226,7 +181,9 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 32.0,),
+              const SizedBox(
+                height: 32.0,
+              ),
               Form(
                   child: Column(
                 children: [
@@ -325,6 +282,3 @@ class _AccountPageState extends State<AccountPage> {
     }
   }
 }
-
-typedef OnPickImageCallback = void Function(
-    double? maxWidth, double? maxHeight, int? quality);

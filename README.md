@@ -20,8 +20,8 @@ samples, guidance on mobile development, and a full API reference.
 - [ ] functionalities
     * events
         * [x] add time input and change location search to: https://pub.dev/packages/textfield_search
-        * join events
         * edit events
+        * join events
     * user sheet
         * public events
         * friend events

@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:latlong2/latlong.dart';
 
-class Event {
+class Event extends ChangeNotifier {
   final String eid;
   final String name;
   final String description;
@@ -11,6 +12,7 @@ class Event {
   final Address address;
   final List<String> attendeeIDs;
   final List<String> organiserIDs;
+  final List<String> pictureList;
   final EventType eventType;
   final LatLng latLng;
 
@@ -22,6 +24,7 @@ class Event {
     required this.address,
     required this.attendeeIDs,
     required this.organiserIDs,
+    required this.pictureList,
     required this.eventType,
     required this.description,
     required this.latLng,
@@ -35,6 +38,7 @@ class Event {
         "address": address.toJson(),
         "attendees": attendeeIDs,
         "organisers": organiserIDs,
+        "picture_list": pictureList,
         "event_type": eventType.number,
         "description": description,
         "lat_lng": latLng.toJson(),
@@ -55,6 +59,7 @@ class Event {
       address: Address.fromJson(data['address']),
       attendeeIDs: List.from(data['attendees']),
       organiserIDs: List.from(data['organisers']),
+      pictureList: List.from(data['picture_list'] ?? {}),
       eventType: EventType.values[data['event_type']],
       description: data['description'],
       latLng: LatLng.fromJson(data['lat_lng']),
@@ -81,4 +86,3 @@ class EventArguments {
 
   EventArguments({required this.event});
 }
-
