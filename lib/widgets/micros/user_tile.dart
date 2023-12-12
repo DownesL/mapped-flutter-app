@@ -29,7 +29,7 @@ class UserTile extends StatelessWidget {
           '/home/user',
           arguments: UserArguments(mUser: mappedUser),
         ),
-        leading: const ProfilePic(size: 40),
+        leading: ProfilePic(size: 40, mappedUser: mappedUser,),
         title: Text(
           mappedUser.displayName ?? "Danny",
           style: Theme.of(context).textTheme.titleSmall,

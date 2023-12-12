@@ -57,7 +57,7 @@ class FirebaseService {
     if (user != null) {
       await FirebaseFirestore.instance
           .collection('events')
-          .doc(user.uid)
+          .doc(event.eid)
           .set(event.toFirestore());
     }
   }

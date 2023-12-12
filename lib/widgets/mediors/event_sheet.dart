@@ -40,8 +40,9 @@ class _EventSheetState extends State<EventSheet> {
       builder: (context) {
         return ChangeNotifierProvider<Event>.value(
             value: event,
-            child: AddImageOverlay(closeFunction: () => overlayEntry.remove()));
-        overlayEntry.remove();
+            child: AddImageOverlay(
+              closeFunction: () => overlayEntry.remove(),
+            ));
       },
     );
 
@@ -108,19 +109,14 @@ class _EventSheetState extends State<EventSheet> {
           if (event.eventType != EventType.private) const Divider(),
           Row(
             children: [
-              const Text("Pictures"),
-              const Spacer(),
-              if (event.organiserIDs.contains(mUser.uid))
-                IconButton.outlined(
-                    visualDensity: VisualDensity.compact,
-                    padding: const EdgeInsets.all(3.0),
-                    onPressed: () => _showAddImageDialog(context),
-                    icon: const Icon(
-                      Icons.add,
-                      size: 16,
-                    ),
-                    tooltip: "Add"),
+              Text(
+                "Pictures",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ],
+          ),
+          SizedBox(
+            height: 8.0,
           ),
           if (event.pictureList.isNotEmpty)
             Flexible(
@@ -130,12 +126,18 @@ class _EventSheetState extends State<EventSheet> {
                   shrinkWrap: true,
                   itemCount: event.pictureList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Image(
-                      width: 300,
-                      height: 150,
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        event.pictureList[index],
+                    return Container(
+                      decoration:
+                          BoxDecoration(borderRadius: BorderRadius.circular(5)),
+                      margin: EdgeInsets.only(right: 4.0),
+                      clipBehavior: Clip.antiAlias,
+                      child: Image(
+                        width: 150,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        image: NetworkImage(
+                          event.pictureList[index],
+                        ),
                       ),
                     );
                   },
@@ -148,13 +150,43 @@ class _EventSheetState extends State<EventSheet> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               QRCodePopup(url: 'events/${event.eid}'),
-              IconButton(
+              Spacer(),
+              IconButton.outlined(
+                style: ButtonStyle(
+                  side: MaterialStatePropertyAll(
+                    BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ),
                 onPressed: () {},
                 icon: Icon(
                   Icons.share,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
+              if (event.organiserIDs.contains(mUser.uid))
+                const SizedBox(
+                  width: 4,
+                ),
+              if (event.organiserIDs.contains(mUser.uid))
+                OutlinedButton.icon(
+                  onPressed: () => _showAddImageDialog(context),
+                  style: ButtonStyle(
+                    side: MaterialStatePropertyAll(
+                      BorderSide(color: Theme.of(context).primaryColor),
+                    ),
+                  ),
+                  icon: const Icon(
+                    Icons.add,
+                    size: 16,
+                  ),
+                  label: Text("Add"),
+                ),
+              if (event.organiserIDs.contains(mUser.uid))
+                const SizedBox(
+                  width: 4,
+                ),
               if (event.organiserIDs.contains(mUser.uid))
                 TextButton(
                   onPressed: () {},

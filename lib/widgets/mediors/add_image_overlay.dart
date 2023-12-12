@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mapped/firebase_service.dart';
 import 'package:mapped/image_util.dart';
 import 'package:mapped/models/event.dart';
 import 'package:provider/provider.dart';
 
 class AddImageOverlay extends StatefulWidget {
-  const AddImageOverlay({super.key, required this.closeFunction});
+  const AddImageOverlay(
+      {super.key, required this.closeFunction});
 
   final Function() closeFunction;
 
@@ -38,7 +40,12 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
         isVideo = false;
         setState(() {
           if (response.files == null) {
-            _mediaFileList = iU.setImageFileListFromFile(response.file);
+            var imgs = iU.setImageFileListFromFile(response.file);
+            if (_mediaFileList != null) {
+              _mediaFileList!.add(imgs!.last);
+            } else {
+              _mediaFileList = imgs;
+            }
           } else {
             _mediaFileList = response.files;
           }
@@ -63,7 +70,12 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
             maxHeight: maxHeight,
             imageQuality: quality,
           );
-          _mediaFileList = iU.setImageFileListFromFile(pickedFile);
+          var imgs = iU.setImageFileListFromFile(pickedFile);
+          if (_mediaFileList != null) {
+            _mediaFileList!.add(imgs!.last);
+          } else {
+            _mediaFileList = imgs;
+          }
           setState(() {});
         } catch (e) {
           setState(() {
@@ -79,7 +91,9 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
     var event = context.read<Event>();
 
     var imgList = <String>[];
-    event.pictureList.forEach((element) => imgList.add(element));
+    for (var element in event.pictureList) {
+      imgList.add(element);
+    }
     if (_mediaFileList != null && _mediaFileList!.isNotEmpty) {
       for (var element in _mediaFileList!) {
         imgList.add(element.path);
@@ -109,6 +123,9 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
             Flexible(
               child: Container(
                 height: 250,
+                padding: EdgeInsets.symmetric(
+                  vertical: 25,
+                ),
                 width: double.maxFinite,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
@@ -116,19 +133,21 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
                   children: [
                     if (imgList.isNotEmpty)
                       for (var pic in imgList)
-                        if (pic.contains("/data/user/0"))
-                          Image(
-                              width: 300,
-                              height: 200,
-                              fit: BoxFit.cover,
-                              image: FileImage(File(pic)))
-                        else
-                          Image(
-                            width: 300,
-                            height: 200,
-                            fit: BoxFit.cover,
-                            image: NetworkImage(pic),
-                          ),
+                        Container(
+                          margin: EdgeInsets.only(right: 8.0),
+                          width: 250,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20)),
+                          clipBehavior: Clip.antiAlias,
+                          child: pic.contains("/data/user/0")
+                              ? Image(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(File(pic)))
+                              : Image(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(pic),
+                                ),
+                        ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
@@ -157,7 +176,8 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
                 FilledButton(
                   child: const Text('Save'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    save();
+                    widget.closeFunction();
                   },
                 ),
               ],
@@ -166,5 +186,21 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
         ),
       ),
     );
+  }
+
+  save() async {
+    var fS = FirebaseService();
+    var event = context.read<Event>();
+    if (_mediaFileList != null) {
+      for (var img in _mediaFileList!) {
+        var url = await fS.uploadImage(
+          "/events/${event.eid}/${img.name}",
+          File(img.path),
+        );
+        if (url != null) {
+          event.addToPictureList(url);
+        }
+      }
+    }
   }
 }

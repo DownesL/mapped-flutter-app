@@ -8,7 +8,14 @@ class QRCodePopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return IconButton.outlined(
+      style: ButtonStyle(
+          side: MaterialStatePropertyAll(
+            BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+          ),
+          backgroundColor: MaterialStatePropertyAll(
+            Theme.of(context).colorScheme.background,
+          )),
       onPressed: () => _dialogBuilder(context, url),
       icon: Icon(
         Icons.qr_code_2,
@@ -34,8 +41,9 @@ class QRCodePopup extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                  side:
+                      BorderSide(color: Theme.of(context).colorScheme.primary)),
               child: const Text('Done!'),
               onPressed: () {
                 Navigator.of(context).pop();

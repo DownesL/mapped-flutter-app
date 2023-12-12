@@ -68,6 +68,11 @@ class Event extends ChangeNotifier {
 
   @override
   String toString() => name;
+
+  addToPictureList(String img) {
+    pictureList.add(img);
+    notifyListeners();
+  }
 }
 
 enum EventType {

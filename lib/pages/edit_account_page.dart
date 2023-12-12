@@ -84,7 +84,7 @@ class _AccountPageState extends State<AccountPage> {
             imageQuality: quality,
           );
           setState(() {
-            iU.setImageFileListFromFile(pickedFile);
+            _mediaFileList = iU.setImageFileListFromFile(pickedFile);
           });
         } catch (e) {
           setState(() {
