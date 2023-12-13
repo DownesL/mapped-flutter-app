@@ -20,7 +20,7 @@ class UserSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            leading: const ProfilePic(size: 40),
+            leading: ProfilePic(size: 40, mappedUser: mappedUser,),
             contentPadding: EdgeInsets.all(0),
             title: Text(
               mappedUser.displayName ?? "Danny",
@@ -34,12 +34,19 @@ class UserSheet extends StatelessWidget {
             ),
           ),
           Spacer(),
-          const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               QRCodePopup(url: 'users/${mappedUser.uid}'),
-              IconButton(
+              Spacer(),
+              IconButton.outlined(
+                style: ButtonStyle(
+                  side: MaterialStatePropertyAll(
+                    BorderSide(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ),
                 onPressed: () {},
                 icon: Icon(
                   Icons.share,

@@ -178,7 +178,7 @@ class _EventSheetState extends State<EventSheet> {
                     ),
                   ),
                   icon: const Icon(
-                    Icons.add,
+                    Icons.add_a_photo,
                     size: 16,
                   ),
                   label: Text("Add"),

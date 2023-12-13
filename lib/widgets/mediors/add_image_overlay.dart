@@ -170,6 +170,13 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 OutlinedButton(
+                  style: ButtonStyle(
+                    side: MaterialStatePropertyAll(
+                      BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ),
                   child: const Text('Cancel'),
                   onPressed: widget.closeFunction,
                 ),
