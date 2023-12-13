@@ -12,7 +12,7 @@ class Event extends ChangeNotifier {
   final Address address;
   final List<String> attendeeIDs;
   final List<String> organiserIDs;
-  final List<String> pictureList;
+  late List<String> pictureList;
   final EventType eventType;
   final LatLng latLng;
 
@@ -71,6 +71,11 @@ class Event extends ChangeNotifier {
 
   addToPictureList(String img) {
     pictureList.add(img);
+    notifyListeners();
+  }
+
+  void updatePictureList(List<String> pictureList) {
+    this.pictureList = pictureList;
     notifyListeners();
   }
 }
