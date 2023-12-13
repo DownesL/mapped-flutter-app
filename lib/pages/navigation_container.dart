@@ -48,17 +48,17 @@ class _NavigationContainerState extends State<NavigationContainer> {
   late MappedUser mappedUser;
 
   void redirectIfNotLoggedIn(User? user) {
-    if (user == null) {
+    if (user == null && mounted) {
       Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
     } else {
-      var mUser = context.read<MappedUser>();
-      if (mUser.labels == null) {
-        if (context.mounted) {
+      if (mounted) {
+        var mUser = context.read<MappedUser>();
+        if (mUser.labels == null) {
           Navigator.pushNamedAndRemoveUntil(
               context, '/sign_up/2', (route) => false);
+        } else {
+          print('User is signed in!');
         }
-      } else {
-        print('User is signed in!');
       }
     }
   }
