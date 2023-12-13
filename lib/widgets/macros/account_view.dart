@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mapped/models/mapped_user.dart';
 import 'package:mapped/widgets/mediors/events_view.dart';
 import 'package:mapped/widgets/micros/user_info_widget.dart';
+import 'package:provider/provider.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -56,7 +58,11 @@ class _AccountViewState extends State<AccountView> {
                 ),
                 icon: const Icon(Icons.logout),
                 label: const Text("Log out"),
-                onPressed: () => signOut(),
+                onPressed: () {
+                  var mU = context.read<MappedUser>();
+                  mU.clearValues();
+                  signOut();
+                },
               ),
             ],
           ),
