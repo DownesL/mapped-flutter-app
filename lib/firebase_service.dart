@@ -313,4 +313,13 @@ class FirebaseService {
       }).toList();
     });
   }
+
+  Future<void> addEvent(Event event) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    if (event.eid.isNotEmpty) {
+      await db.collection("events").doc(event.eid).set(event.toFirestore());
+    } else {
+      await db.collection("events").add(event.toFirestore());
+    }
+  }
 }

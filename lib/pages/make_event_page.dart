@@ -3,14 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mapped/firebase_service.dart';
 import 'package:mapped/models/date_picker_arguments.dart';
 import 'package:mapped/models/event.dart';
 
 class MakeEventPage extends StatefulWidget {
-  const MakeEventPage({super.key, this.restorationId, required this.eventType});
+  const MakeEventPage(
+      {super.key, this.restorationId, required this.eventType, this.event});
 
   final String? restorationId;
   final EventType eventType;
+  final Event? event;
 
   @override
   State<MakeEventPage> createState() => _MakeEventPageState();
@@ -259,6 +262,21 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
   }
 
   @override
+  void initState() {
+    if (widget.event != null) {
+      var e = widget.event!;
+      nameController.text = e.name;
+      numberController.text = e.address.houseNumber ?? "1";
+      descriptionController.text = e.description;
+      _address = e.address;
+      _latLng = e.latLng;
+      locationController.text =
+          '${e.address.road}, ${e.address.postcode}, ${e.address.countryCode!.toUpperCase()}';
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -498,12 +516,12 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
     );
   }
 
-  void saveEvent() {
+  Future<void> saveEvent() async {
     var user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       _address?.houseNumber = numberController.text;
       Event event = Event(
-        eid: '',
+        eid: widget.event?.eid ?? '',
         name: nameController.text,
         startDate: _selectedStartDate.value,
         endDate: _selectedEndDate.value,
@@ -516,9 +534,21 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
         latLng: _latLng!,
       );
 
-      FirebaseFirestore db = FirebaseFirestore.instance;
-      db.collection("events").add(event.toFirestore());
-      Navigator.pushNamedAndRemoveUntil(context, '/calendar', (route) => false);
+      var fS = FirebaseService();
+      await fS.addEvent(event);
+      if (mounted) {
+        if (widget.event?.eid != null) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            "/home/event",
+            (route) => false,
+            arguments: EventArguments(event: event),
+          );
+        } else {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/calendar', (route) => false);
+        }
+      }
     }
   }
 }
