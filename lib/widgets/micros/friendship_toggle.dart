@@ -12,8 +12,20 @@ class FriendshipToggle extends StatelessWidget {
     var cU = context.watch<MappedUser>();
     bool areFriends = cU.friends!.contains(mappedUser.uid);
     bool pending = cU.pending!.contains(mappedUser.uid);
-    return IconButton(
-        icon: Icon(areFriends ? Icons.person_remove : (pending ? Icons.schedule_send : Icons.person_add)),
+    return IconButton.outlined(
+        style: ButtonStyle(
+          side: MaterialStatePropertyAll(
+            BorderSide(
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+          ),
+        ),
+        icon: Icon(
+          areFriends
+              ? Icons.person_remove
+              : (pending ? Icons.schedule_send : Icons.person_add),
+          color: Theme.of(context).colorScheme.tertiary,
+        ),
         onPressed: () => cU.toggleFriendship(mappedUser, areFriends, pending));
   }
 }
