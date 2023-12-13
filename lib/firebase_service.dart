@@ -153,10 +153,10 @@ class FirebaseService {
       db = db.limit(limit);
     }
     if (after != null) {
-      db = db.where("start_date", isGreaterThanOrEqualTo: after);
+      db = db.where("end_date", isGreaterThanOrEqualTo: after);
     }
     if (before != null) {
-      db = db.where("start_date", isGreaterThanOrEqualTo: after);
+      db = db.where("end_date", isLessThanOrEqualTo: before);
     }
     return await db.get().then((querySnapshot) {
       return querySnapshot.docs.map((e) {
@@ -296,8 +296,7 @@ class FirebaseService {
         );
   }
 
-  Future<List<Event>?> getPublicEvents(
-    MappedUser mUser, {
+  Future<List<Event>?> getPublicEvents( {
     int? limit,
   }) async {
     var db = FirebaseFirestore.instance
