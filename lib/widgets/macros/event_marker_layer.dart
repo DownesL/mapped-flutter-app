@@ -31,7 +31,6 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
     if (user != null) {
       if (widget.onlyPublicEvents) {
         kEvents = await fS.getPublicEvents(
-              currentUser,
               limit: 25,
             ) ??
             <Event>[];
@@ -72,10 +71,10 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
     currentUser = context.watch<MappedUser>();
     var accentColors = currentUser.labels;
     return loading
-        ? Align(
+        ? const Align(
             alignment: Alignment.bottomLeft,
             child: Padding(
-              padding: const EdgeInsets.all(9.0),
+              padding: EdgeInsets.all(9.0),
               child: CircularProgressIndicator(),
             ))
         : MarkerLayer(
