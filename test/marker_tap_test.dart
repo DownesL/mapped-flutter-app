@@ -34,7 +34,7 @@ main() {
         friend: 0xff123123,
       ),
       friends: [],
-      pending: [],
+      pending: {},
       attendingEventsIDs: [],
       organisedEventsIDs: [],
     );
@@ -68,7 +68,7 @@ main() {
         friend: 0xff123123,
       ),
       friends: [],
-      pending: [],
+      pending: {},
       attendingEventsIDs: ["Event 1"],
       organisedEventsIDs: [],
     );

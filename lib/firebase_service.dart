@@ -52,6 +52,15 @@ class FirebaseService {
     }
   }
 
+  Future<void> updateFriendship(MappedUser mUser) async {
+    await FirebaseFirestore.instance.collection('users').doc(mUser.uid).update(
+      {
+        'pending': mUser.pending,
+        'friends': mUser.friends,
+      },
+    );
+  }
+
   Future<void> updateEvent(Event event) async {
     var user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -66,7 +75,7 @@ class FirebaseService {
     List<String> uids,
   ) async {
     var user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
+    if (user != null && uids.isNotEmpty) {
       return await FirebaseFirestore.instance
           .collection('users')
           .where(FieldPath.documentId, whereIn: uids)
@@ -287,7 +296,7 @@ class FirebaseService {
     }
     return FirebaseFirestore.instance
         .collection('users')
-        .where(FieldPath.documentId, whereIn: mappedUser.pending ?? [])
+        .where(FieldPath.documentId, whereIn: mappedUser.pending?.keys.toList() ?? [])
         .snapshots()
         .map(
           (e) => e.docs
@@ -296,7 +305,7 @@ class FirebaseService {
         );
   }
 
-  Future<List<Event>?> getPublicEvents( {
+  Future<List<Event>?> getPublicEvents({
     int? limit,
   }) async {
     var db = FirebaseFirestore.instance

@@ -15,7 +15,7 @@ class MappedUser extends ChangeNotifier {
   String? email;
   Labels? labels;
   List<String>? friends;
-  List<String>? pending;
+  Map<String, bool>? pending;
   List<String>? attendingEventsIDs;
   List<String>? organisedEventsIDs;
   String? profilePicUrl;
@@ -35,7 +35,7 @@ class MappedUser extends ChangeNotifier {
 
   MappedUser.def() {
     friends = [];
-    pending = [];
+    pending = {};
     attendingEventsIDs = [];
     organisedEventsIDs = [];
   }
@@ -111,7 +111,7 @@ class MappedUser extends ChangeNotifier {
           labels:
               Labels.fromFirestore((data['labels'] as Map<String, dynamic>)),
           friends: List.from(data['friends']),
-          pending: List.from(data['pending']),
+          pending: (data['pending'] as Map<String, dynamic>).cast<String, bool>(),
           attendingEventsIDs: List.from(data['attending_events']),
           organisedEventsIDs: List.from(data['organised_events']),
           profilePicUrl: data['profile_pic_url']);
@@ -122,7 +122,7 @@ class MappedUser extends ChangeNotifier {
         email: user.email,
         labels: Labels.fromFirestore((data['labels'] as Map<String, dynamic>)),
         friends: List.from(data['friends']),
-        pending: List.from(data['pending']),
+        pending: (data['pending'] as Map<String, dynamic>).cast<String, bool>(),
         attendingEventsIDs: List.from(data['attending_events']),
         organisedEventsIDs: List.from(data['organised_events']),
         profilePicUrl: data['profile_pic_url']);
@@ -173,12 +173,25 @@ class MappedUser extends ChangeNotifier {
   }
 
   setPending(MappedUser mappedUser) async {
-    pending!.add(mappedUser.uid!);
-    mappedUser.pending!.add(uid!);
+    // true : this user sends the request
+    pending!.putIfAbsent(mappedUser.uid!, () => true);
+    // false : this user receives the request
+    mappedUser.pending!.putIfAbsent(uid!, () => false);
     notifyListeners();
 
-    await fS.updateUserData(this);
-    await fS.updateUserData(mappedUser);
+    await fS.updateFriendship(this);
+    await fS.updateFriendship(mappedUser);
+  }
+  acceptPending(MappedUser mappedUser) async {
+    pending!.remove(mappedUser.uid);
+    mappedUser.pending!.remove(uid);
+
+    friends!.add(mappedUser.uid!);
+    mappedUser.friends!.add(uid!);
+    notifyListeners();
+
+    await fS.updateFriendship(this);
+    await fS.updateFriendship(mappedUser);
   }
 
   removePending(MappedUser mappedUser) async {
@@ -186,16 +199,17 @@ class MappedUser extends ChangeNotifier {
     mappedUser.pending!.remove(uid!);
     notifyListeners();
 
-    await fS.updateUserData(this);
-    await fS.updateUserData(mappedUser);
+    await fS.updateFriendship(this);
+    await fS.updateFriendship(mappedUser);
   }
 
   removeFriend(MappedUser mappedUser) async {
     friends?.remove(mappedUser.uid);
     mappedUser.friends?.remove(uid);
     notifyListeners();
-    await fS.updateUserData(this);
-    await fS.updateUserData(mappedUser);
+
+    await fS.updateFriendship(this);
+    await fS.updateFriendship(mappedUser);
   }
 
   toggleFriendship(MappedUser mappedUser, bool areFriends, bool pending) async {

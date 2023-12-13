@@ -190,15 +190,15 @@ class _NavigationContainerState extends State<NavigationContainer> {
                   size: 32,
                 ),
                 onTap: setSelectedIndex,
-                items: const [
-                  BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
-                  BottomNavigationBarItem(
+                items: [
+                  const BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
+                  const BottomNavigationBarItem(
                       icon: Icon(Icons.calendar_today), label: 'Calendar'),
-                  BottomNavigationBarItem(
+                  const BottomNavigationBarItem(
                       icon: Icon(Icons.explore), label: 'Discover'),
                   BottomNavigationBarItem(
                     label: "Account",
-                    icon: AccountDrawerButton(),
+                    icon: AccountDrawerButton(selected: _selectedIndex == 3,),
                   ),
                 ],
               ),

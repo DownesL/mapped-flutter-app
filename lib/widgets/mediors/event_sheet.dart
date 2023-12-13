@@ -69,7 +69,9 @@ class _EventSheetState extends State<EventSheet> {
     var e = await fS.getEventByID(widget.event.eid);
     if (e == null) return;
     event = e;
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

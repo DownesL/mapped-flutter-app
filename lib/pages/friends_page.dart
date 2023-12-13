@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mapped/firebase_service.dart';
 import 'package:mapped/models/mapped_user.dart';
 import 'package:mapped/widgets/mediors/top_bar.dart';
-import 'package:mapped/widgets/micros/user_info_widget.dart';
 import 'package:mapped/widgets/micros/user_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +19,6 @@ class _FriendsPageState extends State<FriendsPage> {
   List<MappedUser> friends = [];
   late MappedUser mUser;
 
-
   var fS = FirebaseService();
 
   @override
@@ -28,10 +26,15 @@ class _FriendsPageState extends State<FriendsPage> {
     super.initState();
   }
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     mUser = context.watch<MappedUser>();
-    setUserFriends(mUser);
+    if (mUser.pending!.length != pendingRequests.length ||
+        mUser.friends!.length != friends.length) {
+      setUserFriends(mUser);
+    }
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60.0),
@@ -57,7 +60,9 @@ class _FriendsPageState extends State<FriendsPage> {
                 "Pending Requests",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              if (pendingRequests.isEmpty)
+              if (isLoading)
+                CircularProgressIndicator()
+              else if (pendingRequests.isEmpty)
                 const Text("No pending requests")
               else
                 Flexible(
@@ -91,11 +96,20 @@ class _FriendsPageState extends State<FriendsPage> {
   }
 
   void setUserFriends(MappedUser mappedUser) async {
-    if (mappedUser.pending != null && mappedUser.pending!.isNotEmpty) {
-      pendingRequests = await fS.getUserFriends(mappedUser.pending!);
+    if (mounted) {
+      isLoading = true;
+      setState(() {});
     }
-    if (mappedUser.friends != null && mappedUser.friends!.isNotEmpty) {
+    if (mappedUser.pending != null) {
+      pendingRequests =
+          await fS.getUserFriends(mappedUser.pending!.keys.toList());
+    }
+    if (mappedUser.friends != null) {
       friends = await fS.getUserFriends(mappedUser.friends!);
+    }
+    if (mounted) {
+      isLoading = false;
+      setState(() {});
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mapped/models/mapped_user.dart';
 import 'package:mapped/widgets/mediors/events_view.dart';
@@ -12,6 +13,16 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+
+  void signOut() async {
+
+    await FirebaseAuth.instance.signOut();
+    if (mounted) {
+      var mU = context.read<MappedUser>();
+      mU.clearValues();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -59,8 +70,6 @@ class _AccountViewState extends State<AccountView> {
                 icon: const Icon(Icons.logout),
                 label: const Text("Log out"),
                 onPressed: () {
-                  var mU = context.read<MappedUser>();
-                  mU.clearValues();
                   signOut();
                 },
               ),

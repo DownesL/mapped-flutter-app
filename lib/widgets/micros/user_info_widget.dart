@@ -6,9 +6,7 @@ import 'package:mapped/widgets/micros/qr_code.dart';
 import 'package:mapped/widgets/micros/qr_code_popup.dart';
 import 'package:provider/provider.dart';
 
-void signOut() async {
-  await FirebaseAuth.instance.signOut();
-}
+
 
 class UserInfoWidget extends StatelessWidget {
   const UserInfoWidget({super.key, this.size = 50, this.mappedUser});
