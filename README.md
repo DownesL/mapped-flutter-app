@@ -23,7 +23,7 @@ samples, guidance on mobile development, and a full API reference.
         * [2/3] edit events
           * [x] photos
           * [x] general edit
-          * [x] general edit - testing
+          * [] general edit - testing
         * join events
     * user sheet
         * public events
