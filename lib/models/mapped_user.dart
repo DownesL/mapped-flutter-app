@@ -39,6 +39,17 @@ class MappedUser extends ChangeNotifier {
     attendingEventsIDs = [];
     organisedEventsIDs = [];
   }
+  MappedUser.clear() {
+    uid = null;
+    displayName = null;
+    email = null;
+    labels = null;
+    friends = null;
+    pending = null;
+    attendingEventsIDs = null;
+    organisedEventsIDs = null;
+    profilePicUrl = null;
+  }
 
   MappedUser({
     required this.uid,
@@ -132,6 +143,19 @@ class MappedUser extends ChangeNotifier {
 
   void updateEmail(String text) {
     email = text;
+    notifyListeners();
+  }
+
+  void clearValues() {
+    uid = null;
+    displayName = null;
+    email = null;
+    labels = null;
+    friends = null;
+    pending = null;
+    attendingEventsIDs = null;
+    organisedEventsIDs = null;
+    profilePicUrl = null;
     notifyListeners();
   }
 
