@@ -27,27 +27,37 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
     setState(() {
       loading = true;
     });
-    var user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      if (widget.onlyPublicEvents) {
-        kEvents = await fS.getPublicEvents(
-              limit: 25,
-            ) ??
-            <Event>[];
-      } else {
-        kEvents = await fS.getUserEvents(
-              currentUser,
-              after: DateTime.now(),
-            ) ??
-            <Event>[];
-        if (widget.extraEvents != null) {
-          kEvents.addAll(widget.extraEvents!);
+    try {
+      var user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        if (widget.onlyPublicEvents) {
+          kEvents = await fS.getDiscoverPageEvents(
+                mappedUser: currentUser,
+                limit: 25,
+              ) ??
+              <Event>[];
+        } else {
+          kEvents = await fS.getUserEvents(
+                currentUser,
+                after: DateTime.now(),
+              ) ??
+              <Event>[];
+          if (widget.extraEvents != null) {
+            kEvents.addAll(widget.extraEvents!);
+          }
+        }
+        if (mounted) {
+          setState(() {
+            loading = false;
+          });
         }
       }
-
-      setState(() {
-        loading = false;
-      });
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          loading = false;
+        });
+      }
     }
   }
 
@@ -137,12 +147,6 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
                               accentColors.eventLabelColor(event.eventType)),
                         ),
                       ][event.eventType.number],
-                      // Icon(
-                      //   Icons.place,
-                      //   size: 40,
-                      //   color: Color(
-                      //       ,
-                      // ),
                     ),
                   ),
             ],

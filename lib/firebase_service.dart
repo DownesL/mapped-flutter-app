@@ -296,7 +296,8 @@ class FirebaseService {
     }
     return FirebaseFirestore.instance
         .collection('users')
-        .where(FieldPath.documentId, whereIn: mappedUser.pending?.keys.toList() ?? [])
+        .where(FieldPath.documentId,
+            whereIn: mappedUser.pending?.keys.toList() ?? [])
         .snapshots()
         .map(
           (e) => e.docs
@@ -305,7 +306,8 @@ class FirebaseService {
         );
   }
 
-  Future<List<Event>?> getPublicEvents({
+  Future<List<Event>?> getDiscoverPageEvents({
+    required MappedUser mappedUser,
     int? limit,
   }) async {
     var db = FirebaseFirestore.instance
@@ -315,11 +317,25 @@ class FirebaseService {
     if (limit != null) {
       db = db.limit(limit);
     }
-    return await db.get().then((querySnapshot) {
+    var list = await db.get().then((querySnapshot) {
       return querySnapshot.docs.map((e) {
         return Event.fromFirestore(e, null);
       }).toList();
     });
+    var db2 = FirebaseFirestore.instance
+        .collection('events')
+        .where("event_type", isEqualTo: EventType.friend.number)
+        .where("organisers", arrayContainsAny: mappedUser.friends ?? [])
+        .where("end_date", isGreaterThanOrEqualTo: DateTime.now());
+    if (limit != null) {
+      db2 = db2.limit(limit);
+    }
+    await db2.get().then((querySnapshot) {
+      return querySnapshot.docs.forEach((e) {
+        list.add(Event.fromFirestore(e, null));
+      });
+    });
+    return list;
   }
 
   Future<void> addEvent(Event event) async {
