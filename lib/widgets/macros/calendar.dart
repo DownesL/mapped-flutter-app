@@ -54,7 +54,7 @@ class _CalendarState extends State<Calendar> {
     if (list != null) {
       for (var event in list) {
         if (event.endDate.day != event.startDate.day) {
-          for (int i = 0; i <= (event.endDate.day - event.startDate.day).abs(); i++) {
+          for (int i = 0; i <= event.endDate.difference(event.startDate).inDays; i++) {
             var intermediateDay =
                 event.startDate.add(Duration(days: i));
             if (events[intermediateDay] != null) {
