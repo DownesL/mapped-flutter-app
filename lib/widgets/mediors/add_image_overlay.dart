@@ -8,8 +8,7 @@ import 'package:mapped/models/event.dart';
 import 'package:provider/provider.dart';
 
 class AddImageOverlay extends StatefulWidget {
-  const AddImageOverlay(
-      {super.key, required this.closeFunction});
+  const AddImageOverlay({super.key, required this.closeFunction});
 
   final Function() closeFunction;
 
@@ -21,12 +20,13 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
   dynamic _pickImageError;
   String? _retrieveDataError;
   bool isVideo = false;
+  bool isLoading = false;
 
   final ImagePicker _picker = ImagePicker();
 
   var iU = ImageUtil();
 
-  List<XFile>? _mediaFileList;
+  List<XFile>? _mediaFileList = [];
 
   Future<void> retrieveLostData() async {
     final LostDataResponse response = await _picker.retrieveLostData();
@@ -86,11 +86,12 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
     }
   }
 
+  List<String> imgList = [];
+
   @override
   Widget build(BuildContext context) {
     var event = context.read<Event>();
-
-    var imgList = <String>[];
+    imgList = [];
     for (var element in event.pictureList) {
       imgList.add(element);
     }
@@ -133,20 +134,43 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
                   children: [
                     if (imgList.isNotEmpty)
                       for (var pic in imgList)
-                        Container(
-                          margin: EdgeInsets.only(right: 8.0),
-                          width: 250,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20)),
-                          clipBehavior: Clip.antiAlias,
-                          child: pic.contains("/data/user/0")
-                              ? Image(
-                                  fit: BoxFit.cover,
-                                  image: FileImage(File(pic)))
-                              : Image(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(pic),
-                                ),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 8.0),
+                              width: 250,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20)),
+                              clipBehavior: Clip.antiAlias,
+                              child: pic.contains("/data/user/0")
+                                  ? Image(
+                                      fit: BoxFit.cover,
+                                      image: FileImage(File(pic)))
+                                  : Image(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(pic),
+                                    ),
+                            ),
+                            FilledButton.icon(
+                              onPressed: () {
+                                if (pic.contains("/data/user/0")) {
+                                  _mediaFileList = _mediaFileList!
+                                      .where((item) => item.path != pic)
+                                      .toList();
+                                } else {
+                                  event.pictureList.remove(pic);
+                                }
+                                setState(() {});
+                              },
+                              icon: Icon(Icons.close),
+                              style: ButtonStyle(
+                                visualDensity: VisualDensity.compact,
+                              ),
+                              label: Text("Remove Picture"),
+                            )
+                          ],
                         ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -167,8 +191,11 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                if (isLoading)
+                  CircularProgressIndicator(),
+                Spacer(),
                 OutlinedButton(
                   style: ButtonStyle(
                     side: MaterialStatePropertyAll(
@@ -184,7 +211,6 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
                   child: const Text('Save'),
                   onPressed: () {
                     save();
-                    widget.closeFunction();
                   },
                 ),
               ],
@@ -196,8 +222,13 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
   }
 
   save() async {
+    setState(() {
+      isLoading = true;
+    });
     var fS = FirebaseService();
     var event = context.read<Event>();
+    var updatedList =
+        imgList.where((pic) => !pic.contains("/data/user/0")).toList();
     if (_mediaFileList != null) {
       for (var img in _mediaFileList!) {
         var url = await fS.uploadImage(
@@ -205,9 +236,16 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
           File(img.path),
         );
         if (url != null) {
-          event.addToPictureList(url);
+          updatedList.add(url);
         }
       }
     }
+    event.updatePictureList(updatedList);
+    await fS.addEvent(event);
+    setState(() {
+      isLoading = false;
+    });
+
+    widget.closeFunction();
   }
 }
