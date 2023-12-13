@@ -81,6 +81,7 @@ class _MapOverviewPageState extends State<MapOverviewPage>
   @override
   Widget build(BuildContext context) {
     SearchOptions searchOptions = context.watch<SearchOptions>();
+    var isLoading = searchOptions.items == null;
     final ThemeData theme = Theme.of(context);
     return Stack(
       alignment: Alignment.topCenter,
@@ -190,8 +191,9 @@ class _MapOverviewPageState extends State<MapOverviewPage>
                   const SizedBox(
                     height: 8.0,
                   ),
-                  if ((searchOptions.items != null) &&
-                      (searchOptions.items!.isNotEmpty))
+                  if (isLoading)
+                    const Center(child: CircularProgressIndicator())
+                  else if (searchOptions.items!.isNotEmpty)
                     Flexible(
                       fit: FlexFit.loose,
                       child: ListView.builder(

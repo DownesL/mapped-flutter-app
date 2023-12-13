@@ -33,7 +33,9 @@ class SearchOptions extends ChangeNotifier {
   }
 
   void getExternalSearchItems() async {
+    setItems(null);
     if (term == null) return;
+
     List<SearchItem> l = await fS.getSearchItems(
       term!,
       searchType,
