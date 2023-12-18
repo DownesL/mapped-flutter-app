@@ -26,12 +26,7 @@ class MappedUser extends ChangeNotifier {
   bool get exists => uid!.isNotEmpty;
 
   bool get isNotEmpty =>
-      uid != null && email != null && displayName != null && labels != null
-      /*&&
-      pending != null &&
-      organisedEventsIDs != null &&
-      attendingEventsIDs != null*/
-      ;
+      uid != null && email != null && displayName != null && labels != null;
 
   MappedUser.def() {
     friends = [];
@@ -188,28 +183,28 @@ class MappedUser extends ChangeNotifier {
 
     friends!.add(mappedUser.uid!);
     mappedUser.friends!.add(uid!);
-    notifyListeners();
 
     await fS.updateFriendship(this);
     await fS.updateFriendship(mappedUser);
+    notifyListeners();
   }
 
   removePending(MappedUser mappedUser) async {
     pending!.remove(mappedUser.uid!);
     mappedUser.pending!.remove(uid!);
-    notifyListeners();
 
     await fS.updateFriendship(this);
     await fS.updateFriendship(mappedUser);
+    notifyListeners();
   }
 
   removeFriend(MappedUser mappedUser) async {
     friends?.remove(mappedUser.uid);
     mappedUser.friends?.remove(uid);
-    notifyListeners();
 
     await fS.updateFriendship(this);
     await fS.updateFriendship(mappedUser);
+    notifyListeners();
   }
 
   toggleFriendship(MappedUser mappedUser, bool areFriends, bool pending) async {
@@ -222,6 +217,15 @@ class MappedUser extends ChangeNotifier {
         await setPending(mappedUser);
       }
     }
+  }
+
+  void toggleAttendingEvents(String eid) {
+    if (attendingEventsIDs!.contains(eid)) {
+      attendingEventsIDs!.remove(eid);
+    } else {
+      attendingEventsIDs!.add(eid);
+    }
+    notifyListeners();
   }
 }
 

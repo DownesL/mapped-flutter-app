@@ -166,20 +166,21 @@ class _EventSheetState extends State<EventSheet> {
             children: [
               QRCodePopup(url: 'events/${event.eid}'),
               const Spacer(),
-              IconButton.outlined(
-                style: ButtonStyle(
-                  side: MaterialStatePropertyAll(
-                    BorderSide(
-                      color: Theme.of(context).colorScheme.secondary,
+              if (event.eventType != EventType.private)
+                IconButton.outlined(
+                  style: ButtonStyle(
+                    side: MaterialStatePropertyAll(
+                      BorderSide(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                     ),
                   ),
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.share,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ),
-                onPressed: () {},
-                icon: Icon(
-                  Icons.share,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
               if (event.organiserIDs.contains(mUser.uid))
                 Row(
                   children: [
@@ -218,16 +219,6 @@ class _EventSheetState extends State<EventSheet> {
                     )
                   ],
                 )
-              else if (event.attendeeIDs.contains(mUser.uid))
-                TextButton(
-                  style: ButtonStyle(
-                    side: MaterialStatePropertyAll(
-                      BorderSide(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: const Text('Leave Event'),
-                )
               else
                 TextButton(
                   style: ButtonStyle(
@@ -235,9 +226,11 @@ class _EventSheetState extends State<EventSheet> {
                       BorderSide(color: Theme.of(context).primaryColor),
                     ),
                   ),
-                  onPressed: () {},
-                  child: const Text('Join Event'),
-                ),
+                  onPressed: () => togglePresence(),
+                  child: event.attendeeIDs.contains(mUser.uid)
+                      ? const Text('Leave Event')
+                      : const Text('Join Event'),
+                )
             ],
           ),
           const SizedBox(
@@ -246,5 +239,16 @@ class _EventSheetState extends State<EventSheet> {
         ],
       ),
     );
+  }
+
+  togglePresence() {
+    var currentUser = context.read<MappedUser>();
+    if (event.attendeeIDs.contains(currentUser.uid)) {
+      event.attendeeIDs.remove(currentUser.uid);
+    } else {
+      event.attendeeIDs.add(currentUser.uid!);
+    }
+    fS.updateEvent(event);
+    currentUser.toggleAttendingEvents(event.eid);
   }
 }
