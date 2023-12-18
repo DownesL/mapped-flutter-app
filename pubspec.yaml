@@ -49,7 +49,7 @@ dependencies:
     git:
       url:
         https://github.com/DownesL/geocoder_buddy/
-  provider: ^6.0.5
+  provider: ^6.1.1
   mime: ^1.0.4
   path_provider: ^2.1.1
   flutter_map: ^6.0.1

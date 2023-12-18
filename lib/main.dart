@@ -73,21 +73,49 @@ class Mapped extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.assistantTextTheme().copyWith(
           titleLarge: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700),
+              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
           titleMedium: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700),
+              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
           titleSmall: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700),
+              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
           labelLarge: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700),
+              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
           labelMedium: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700),
+              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
           labelSmall: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700),
+              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
+        ).apply(
+          bodyColor: const Color(0xfff1f2f3),
+          displayColor: const Color(0xfff1f2f3),
+          decorationColor: const Color(0xfff1f2f3),
+        ),
+        iconTheme: IconTheme.of(context).copyWith(
+          color: const Color(0xfff1f2f3),
+        ),
+        listTileTheme: ListTileThemeData().copyWith(
+          textColor: const Color(0xfff1f2f3),
+        ),
+        appBarTheme: AppBarTheme().copyWith(
+          backgroundColor: const Color(0xff171414),
+          foregroundColor: const Color(0xfff1f2f3),
         ),
         colorScheme:
-            ColorScheme.fromSeed(seedColor: const Color(0xff912841)).copyWith(
-          background: Colors.white,
+            ColorScheme.fromSeed(seedColor: const Color(0xffc2355c)).copyWith(
+          background: const Color(0xff171414),
+          primary: const Color(0xffc2355c),
+          primaryContainer: const Color(0xF53D1414),
+          //contrast of: 4.9:1
+          secondary: const Color(0xff285091),
+          secondaryContainer: const Color(0xFF1D2126),
+          //contrast of: 5.46:1
+          tertiary: const Color(0xff32c27f),
+          tertiaryContainer: const Color(0xff1C3426),
+          surface: const Color(0xfff1f2f3),
+          surfaceTint: const Color(0xfff1f2f3),
+          surfaceVariant: const Color(0xfff1f2f3),
+
+/*          ColorScheme.fromSeed(seedColor: const Color(0xff912841)).copyWith(
+          background: Theme.of(context).colorScheme.background,
           primary: const Color(0xff912841),
           primaryContainer: const Color(0xF5F6B9C5),
           //contrast of: 4.9:1
@@ -95,7 +123,7 @@ class Mapped extends StatelessWidget {
           secondaryContainer: const Color(0xFFC2D7FF),
           //contrast of: 5.46:1
           tertiary: const Color(0xff237a51),
-          tertiaryContainer: const Color(0xffDCF4E6), //contrast of: 4.56:1
+          tertiaryContainer: const Color(0xffDCF4E6), //contrast of: 4.56:1*/
         ),
       ),
       home: const NavigationContainer(),

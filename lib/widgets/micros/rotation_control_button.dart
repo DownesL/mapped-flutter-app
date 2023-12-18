@@ -15,7 +15,7 @@ class RotationControlButton extends StatelessWidget {
       onPressed: isDisabled ? null : onPressed,
       icon: Icon(
         Icons.navigation_rounded,
-        color: isDisabled ? Colors.black38 : Colors.black,
+        color: isDisabled ? Theme.of(context).colorScheme.primary.withOpacity(.5) : Theme.of(context).colorScheme.primary,
         semanticLabel: 'Align map with the north',
         size: 40,
       ),

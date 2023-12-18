@@ -15,7 +15,7 @@ class LocationControlButton extends StatelessWidget {
     return IconButton(
       icon: Icon(
         Icons.my_location_outlined,
-        color: isDisabled ? Colors.black38 : Colors.black,
+        color: isDisabled ? Theme.of(context).colorScheme.primary.withOpacity(.5) : Theme.of(context).colorScheme.primary,
         semanticLabel: 'Pan to current location',
         size: 40,
       ),

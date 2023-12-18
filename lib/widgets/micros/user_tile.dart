@@ -20,7 +20,7 @@ class UserTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       decoration: BoxDecoration(
         border: Border.all(color: Theme.of(context).primaryColor),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: ListTile(

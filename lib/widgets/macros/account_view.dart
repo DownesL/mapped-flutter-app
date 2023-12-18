@@ -49,7 +49,7 @@ class _AccountViewState extends State<AccountView> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(
                       Theme.of(context).colorScheme.background),
-                  foregroundColor: const MaterialStatePropertyAll(Colors.black),
+                  foregroundColor: MaterialStatePropertyAll(Theme.of(context).textTheme.labelLarge!.color),
                   textStyle: const MaterialStatePropertyAll(TextStyle(fontSize: 20)),
                   iconSize: const MaterialStatePropertyAll(20.0),
                 ),
@@ -143,7 +143,7 @@ class _AccountViewState extends State<AccountView> {
           Container(
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                color: const Color(0xfff6f6f6),
+                color: Theme.of(context).colorScheme.background.withBlue(40).withGreen(40).withRed(40),
                 border: Border.all(
                   color: Colors.black12,
                 ),

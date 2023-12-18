@@ -24,13 +24,15 @@ samples, guidance on mobile development, and a full API reference.
           * [x] photos
           * [x] general edit
           * [ ] general edit - testing
-        * join events
+        * [x] join events
     * user sheet
         * public events
         * friend events
     * Map 
       * Cache
       * Filters
+    * Share button
+    * clean up Mappeduser
 - [ ] fix styling
     * account page
     * home

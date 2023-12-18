@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder_buddy/geocoder_buddy.dart';
@@ -321,7 +320,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                             border: Border.all(color: Colors.red)),
                         child: Text(
                           dateErrorMessage!,
-                          style: TextStyle(color: Colors.red),
+                          style: const TextStyle(color: Colors.red),
                         ),
                       ),
                     Row(
@@ -375,7 +374,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                               label:
                                   Text(_selectedEndTime.value.format(context)),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 8,
                             ),
                             OutlinedButton.icon(
@@ -442,25 +441,27 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxHeight: 300),
                         child: !isSearching
-                            ? ListView.builder(
-                                itemCount: searchItem.length,
-                                itemBuilder: (context, index) {
-                                  var item = searchItem[index];
-                                  return ListTile(
-                                    title: Text(
-                                      item.displayName,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      setLocation(item);
-                                      searchItem = [];
-                                    },
-                                  );
-                                })
+                            ? searchItem.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: searchItem.length,
+                                    itemBuilder: (context, index) {
+                                      var item = searchItem[index];
+                                      return ListTile(
+                                        title: Text(
+                                          item.displayName,
+                                          style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          setLocation(item);
+                                          searchItem = [];
+                                        },
+                                      );
+                                    })
+                                : const Text("No corresponding address found.")
                             : const Center(
                                 child: CircularProgressIndicator(),
                               ),

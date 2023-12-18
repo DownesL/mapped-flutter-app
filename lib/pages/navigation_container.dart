@@ -184,7 +184,7 @@ class _NavigationContainerState extends State<NavigationContainer> {
             : BottomNavigationBar(
                 currentIndex: _selectedIndex,
                 showUnselectedLabels: true,
-                unselectedItemColor: Colors.black54,
+                unselectedItemColor: Theme.of(context).colorScheme.inversePrimary,
                 selectedItemColor: Theme.of(context).primaryColor,
                 selectedIconTheme: const IconThemeData(
                   size: 32,

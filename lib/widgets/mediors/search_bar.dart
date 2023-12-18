@@ -53,9 +53,10 @@ class _TopSearchBarState extends State<TopSearchBar> {
               controller: searchController,
               onFieldSubmitted: (value) =>
                   searchOptions.setSearchTerm(value.trim()),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Search for events, people...',
+                hintStyle: Theme.of(context).textTheme.labelLarge,
               ),
             ),
           ),

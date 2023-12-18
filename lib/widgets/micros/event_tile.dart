@@ -30,7 +30,7 @@ class EventTile extends StatelessWidget {
         border: Border.all(
           color: accentColor,
         ),
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: ListTile(

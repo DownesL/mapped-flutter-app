@@ -154,9 +154,9 @@ class _CalendarState extends State<Calendar> {
             calendarStyle: CalendarStyle(
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
-              todayTextStyle: const TextStyle(color: Colors.black),
+              todayTextStyle: TextStyle(color: Theme.of(context).textTheme.labelLarge!.color),
               todayDecoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.background,
                   border: Border.all(
                       color: Theme.of(context).primaryColor, width: 2.0),
                   shape: BoxShape.circle),

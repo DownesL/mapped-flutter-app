@@ -32,7 +32,7 @@ class Pill extends StatelessWidget {
         margin: const EdgeInsets.all(4.0),
         child: Text(
           label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: isSelected ? Colors.white : color),
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: isSelected ? Theme.of(context).colorScheme.background : color),
         ),
       ),
     );
