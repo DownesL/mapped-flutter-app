@@ -63,6 +63,8 @@ dependencies:
   qr_flutter: ^4.1.0
   qr_code_scanner: ^1.0.1
   screenshot_callback: ^3.0.1
+  flutter_launcher_icons: ^0.13.1
+  share_plus: ^7.2.1
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +83,11 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/logo.png"
 
 # The following section is specific to Flutter packages.
 flutter:

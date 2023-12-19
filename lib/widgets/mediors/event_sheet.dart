@@ -8,6 +8,7 @@ import 'package:mapped/widgets/mediors/add_image_overlay.dart';
 import 'package:mapped/widgets/micros/attendee_profile_pics.dart';
 import 'package:mapped/widgets/micros/qr_code_popup.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class EventSheet extends StatefulWidget {
   const EventSheet({super.key, required this.event});
@@ -38,6 +39,10 @@ class _EventSheetState extends State<EventSheet> {
 
   final fS = FirebaseService();
 
+  late Event event;
+  late OverlayState overlayState;
+  late OverlayEntry overlayEntry;
+
   _showAddImageDialog(BuildContext context) async {
     overlayEntry = OverlayEntry(
       builder: (context) {
@@ -51,10 +56,6 @@ class _EventSheetState extends State<EventSheet> {
 
     overlayState.insert(overlayEntry);
   }
-
-  late Event event;
-  late OverlayState overlayState;
-  late OverlayEntry overlayEntry;
 
   @override
   void initState() {
@@ -72,6 +73,14 @@ class _EventSheetState extends State<EventSheet> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void share() async {
+    final box = context.findRenderObject() as RenderBox;
+    await Share.share(
+        "Check out this event on the Mapped App: https://mapped.app/events/${event.eid}",
+        subject: "Hello",
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
   }
 
   @override
@@ -175,10 +184,12 @@ class _EventSheetState extends State<EventSheet> {
                       ),
                     ),
                   ),
-                  onPressed: () {},
+                  //todo: this link
+                  onPressed: share,
                   icon: Icon(
                     Icons.share,
                     color: Theme.of(context).colorScheme.secondary,
+                    semanticLabel: "Share",
                   ),
                 ),
               if (event.organiserIDs.contains(mUser.uid))
