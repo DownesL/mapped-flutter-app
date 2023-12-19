@@ -11,7 +11,14 @@ class RotationControlButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return IconButton.outlined(
+      style: ButtonStyle(
+        side: MaterialStatePropertyAll(
+          BorderSide(color: isDisabled
+              ? Theme.of(context).colorScheme.primary.withOpacity(.5)
+              : Theme.of(context).colorScheme.primary, width: 2),
+        ),
+      ),
       onPressed: isDisabled ? null : onPressed,
       icon: Icon(
         Icons.navigation_rounded,

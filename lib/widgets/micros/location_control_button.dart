@@ -12,10 +12,19 @@ class LocationControlButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return IconButton.outlined(
+      style: ButtonStyle(
+        side: MaterialStatePropertyAll(
+          BorderSide(color: isDisabled
+              ? Theme.of(context).colorScheme.primary.withOpacity(.5)
+              : Theme.of(context).colorScheme.primary, width: 2),
+        ),
+      ),
       icon: Icon(
         Icons.my_location_outlined,
-        color: isDisabled ? Theme.of(context).colorScheme.primary.withOpacity(.5) : Theme.of(context).colorScheme.primary,
+        color: isDisabled
+            ? Theme.of(context).colorScheme.primary.withOpacity(.5)
+            : Theme.of(context).colorScheme.primary,
         semanticLabel: 'Pan to current location',
         size: 40,
       ),
