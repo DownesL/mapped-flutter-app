@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mapped/models/event.dart';
+import 'package:mapped/models/filter_options.dart';
 import 'package:mapped/models/mapped_user.dart';
 import 'package:mapped/models/search_options.dart';
 import 'package:mapped/pages/calendar_overview_page.dart';
@@ -22,11 +23,13 @@ class NavigationContainer extends StatefulWidget {
     this.givenIndex,
     this.event,
     this.user,
+    this.filterOptions,
   });
 
   final int? givenIndex;
   final Event? event;
   final MappedUser? user;
+  final FilterOptions? filterOptions;
 
   @override
   State<NavigationContainer> createState() => _NavigationContainerState();
@@ -169,39 +172,45 @@ class _NavigationContainerState extends State<NavigationContainer> {
         body: <Widget>[
           MapOverviewPage(
             event: eventFromWidget,
+            filterOptions: widget.filterOptions,
           ),
           CalendarOverviewPage(
             mappedUser: mappedUser,
           ),
           DiscoverOverviewPage(
             event: eventFromWidget,
+            filterOptions: widget.filterOptions,
           ),
           const AccountView(),
         ][_selectedIndex],
-        bottomNavigationBar: searchOptions.term != null &&
-                searchOptions.term!.isEmpty
-            ? null
-            : BottomNavigationBar(
-                currentIndex: _selectedIndex,
-                showUnselectedLabels: true,
-                unselectedItemColor: Theme.of(context).colorScheme.inversePrimary,
-                selectedItemColor: Theme.of(context).primaryColor,
-                selectedIconTheme: const IconThemeData(
-                  size: 32,
-                ),
-                onTap: setSelectedIndex,
-                items: [
-                  const BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
-                  const BottomNavigationBarItem(
-                      icon: Icon(Icons.calendar_today), label: 'Calendar'),
-                  const BottomNavigationBarItem(
-                      icon: Icon(Icons.explore), label: 'Discover'),
-                  BottomNavigationBarItem(
-                    label: "Account",
-                    icon: AccountDrawerButton(selected: _selectedIndex == 3,),
+        bottomNavigationBar:
+            searchOptions.term != null && searchOptions.term!.isEmpty
+                ? null
+                : BottomNavigationBar(
+                    currentIndex: _selectedIndex,
+                    showUnselectedLabels: true,
+                    unselectedItemColor:
+                        Theme.of(context).colorScheme.inversePrimary,
+                    selectedItemColor: Theme.of(context).primaryColor,
+                    selectedIconTheme: const IconThemeData(
+                      size: 32,
+                    ),
+                    onTap: setSelectedIndex,
+                    items: [
+                      const BottomNavigationBarItem(
+                          icon: Icon(Icons.map), label: 'Map'),
+                      const BottomNavigationBarItem(
+                          icon: Icon(Icons.calendar_today), label: 'Calendar'),
+                      const BottomNavigationBarItem(
+                          icon: Icon(Icons.explore), label: 'Discover'),
+                      BottomNavigationBarItem(
+                        label: "Account",
+                        icon: AccountDrawerButton(
+                          selected: _selectedIndex == 3,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
       ),
     );
   }

@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:mapped/firebase_service.dart';
 import 'package:mapped/models/event.dart';
+import 'package:mapped/models/filter_options.dart';
 import 'package:mapped/models/mapped_user.dart';
 import 'package:provider/provider.dart';
 
 class EventMarkerLayer extends StatefulWidget {
   const EventMarkerLayer(
-      {super.key, this.extraEvents, required this.onlyPublicEvents});
+      {super.key, this.extraEvents, required this.onlyPublicEvents, });
 
   final List<Event>? extraEvents;
   final bool onlyPublicEvents;
+
 
   @override
   State<EventMarkerLayer> createState() => _EventMarkerLayerState();
@@ -22,6 +24,7 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
   late List<Event> kEvents = [];
   var fS = FirebaseService();
   bool loading = false;
+  late FilterOptions filterOptions;
 
   void getAllEvents() async {
     setState(() {
@@ -33,13 +36,15 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
         if (widget.onlyPublicEvents) {
           kEvents = await fS.getDiscoverPageEvents(
                 mappedUser: currentUser,
-                limit: 25,
+                limit: filterOptions.limit,
+                after: filterOptions.after,
               ) ??
               <Event>[];
         } else {
           kEvents = await fS.getUserEvents(
                 currentUser,
-                after: DateTime.now(),
+                after: filterOptions.after,
+                limit: filterOptions.limit,
               ) ??
               <Event>[];
           if (widget.extraEvents != null) {
@@ -73,12 +78,19 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
   @override
   void initState() {
     super.initState();
+    filterOptions = context.read<FilterOptions>();
+    filterOptions.addListener(getAllEvents);
     setUser();
+  }
+  @override
+  void dispose() {
+    filterOptions.removeListener(getAllEvents);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    currentUser = context.watch<MappedUser>();
+    currentUser = context.read<MappedUser>();
     var accentColors = currentUser.labels;
     return loading
         ? const Align(
@@ -120,12 +132,12 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
                           ? () => Navigator.pushNamed(
                                 context,
                                 '/discover/event',
-                                arguments: EventArguments(event: event),
+                                arguments: EventArguments(event: event,filterOptions: filterOptions),
                               )
                           : () => Navigator.pushNamed(
                                 context,
                                 '/home/event',
-                                arguments: EventArguments(event: event),
+                                arguments: EventArguments(event: event, filterOptions: filterOptions),
                               ),
                       child: [
                         Icon(

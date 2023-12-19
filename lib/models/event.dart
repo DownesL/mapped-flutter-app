@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mapped/models/filter_options.dart';
 
 class Event extends ChangeNotifier {
   final String eid;
@@ -93,6 +94,7 @@ enum EventType {
 
 class EventArguments {
   final Event event;
+  final FilterOptions? filterOptions;
 
-  EventArguments({required this.event});
+  EventArguments({required this.event, this.filterOptions, });
 }

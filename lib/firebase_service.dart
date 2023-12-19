@@ -309,11 +309,12 @@ class FirebaseService {
   Future<List<Event>?> getDiscoverPageEvents({
     required MappedUser mappedUser,
     int? limit,
+    DateTime? after,
   }) async {
     var db = FirebaseFirestore.instance
         .collection('events')
         .where("event_type", isEqualTo: EventType.public.number)
-        .where("end_date", isGreaterThanOrEqualTo: DateTime.now());
+        .where("end_date", isGreaterThanOrEqualTo: after ?? DateTime.now());
     if (limit != null) {
       db = db.limit(limit);
     }
