@@ -31,7 +31,7 @@ samples, guidance on mobile development, and a full API reference.
     * user sheet show friends:
         * public events
         * friend events
-    * [] deep linking
+    * [ ] deep linking
     * clean up Mappeduser
 - [ ] fix styling
     * account page
