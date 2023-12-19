@@ -71,24 +71,38 @@ class Mapped extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        textTheme: GoogleFonts.assistantTextTheme().copyWith(
-          titleLarge: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
-          titleMedium: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
-          titleSmall: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
-          labelLarge: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
-          labelMedium: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
-          labelSmall: GoogleFonts.blinker(
-              letterSpacing: 1.3, fontWeight: FontWeight.w700, color: const Color(0xfff1f2f3)),
-        ).apply(
-          bodyColor: const Color(0xfff1f2f3),
-          displayColor: const Color(0xfff1f2f3),
-          decorationColor: const Color(0xfff1f2f3),
-        ),
+        textTheme: GoogleFonts.assistantTextTheme()
+            .copyWith(
+              titleLarge: GoogleFonts.blinker(
+                  letterSpacing: 1.3,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xfff1f2f3)),
+              titleMedium: GoogleFonts.blinker(
+                  letterSpacing: 1.3,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xfff1f2f3)),
+              titleSmall: GoogleFonts.blinker(
+                  letterSpacing: 1.3,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xfff1f2f3)),
+              labelLarge: GoogleFonts.blinker(
+                  letterSpacing: 1.3,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xfff1f2f3)),
+              labelMedium: GoogleFonts.blinker(
+                  letterSpacing: 1.3,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xfff1f2f3)),
+              labelSmall: GoogleFonts.blinker(
+                  letterSpacing: 1.3,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xfff1f2f3)),
+            )
+            .apply(
+              bodyColor: const Color(0xfff1f2f3),
+              displayColor: const Color(0xfff1f2f3),
+              decorationColor: const Color(0xfff1f2f3),
+            ),
         iconTheme: IconTheme.of(context).copyWith(
           color: const Color(0xfff1f2f3),
         ),
@@ -127,24 +141,33 @@ class Mapped extends StatelessWidget {
         ),
       ),
       home: const NavigationContainer(),
+      initialRoute: '/',
       routes: {
         '/login': (context) => const LoginPage(),
         '/sign_up': (context) => const SignUpPage(),
         '/sign_up/2': (context) => const SignUpPageExtended(),
         '/home': (context) => const NavigationContainer(),
         '/home/event': (context) => NavigationContainer(
-            event:
-                (ModalRoute.of(context)!.settings.arguments as EventArguments)
-                    .event),
+              event:
+                  (ModalRoute.of(context)!.settings.arguments as EventArguments)
+                      .event,
+              filterOptions:
+                  (ModalRoute.of(context)!.settings.arguments as EventArguments)
+                      .filterOptions,
+            ),
         '/home/user': (context) => NavigationContainer(
             user: (ModalRoute.of(context)!.settings.arguments as UserArguments)
                 .mUser),
         '/calendar': (context) => const NavigationContainer(givenIndex: 1),
         '/discover/event': (context) => NavigationContainer(
-            givenIndex: 2,
-            event:
-                (ModalRoute.of(context)!.settings.arguments as EventArguments)
-                    .event),
+              givenIndex: 2,
+              event:
+                  (ModalRoute.of(context)!.settings.arguments as EventArguments)
+                      .event,
+              filterOptions:
+                  (ModalRoute.of(context)!.settings.arguments as EventArguments)
+                      .filterOptions,
+            ),
         '/account': (context) => const NavigationContainer(givenIndex: 3),
         '/account/edit': (context) => const AccountPage(),
         '/make_event/public': (context) => const MakeEventPage(
