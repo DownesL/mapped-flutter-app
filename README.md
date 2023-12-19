@@ -26,11 +26,11 @@ samples, guidance on mobile development, and a full API reference.
           * [ ] general edit - testing
         * [x] join events
     * [x] Share button
+    * Map 
+      * [x] Filters
     * user sheet show friends:
         * public events
         * friend events
-    * Map 
-      * Filters
     * [] deep linking
     * clean up Mappeduser
 - [ ] fix styling
