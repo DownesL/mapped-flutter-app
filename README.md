@@ -18,7 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 
 ## TODO
 - [ ] functionalities
-    * events
+    * [ ] events
         * [x] add time input and change location search to: https://pub.dev/packages/textfield_search
         * [2/3] edit events
           * [x] photos
@@ -26,18 +26,18 @@ samples, guidance on mobile development, and a full API reference.
           * [ ] general edit - testing
         * [x] join events
     * [x] Share button
-    * Map 
-      * [x] Filters
-    * user sheet show friends:
+    * [x] Map 
+      * Filters
+    * [ ] user sheet show friends:
         * public events
         * friend events
     * [ ] deep linking
-    * clean up Mappeduser
+    * [ ] clean up Mappeduser
 - [ ] fix styling
-    * account page
-    * home
+    * [ ] account page
+    * [x] home
 - [ ] ux
-     * tooltips
+     * [ ] tooltips
         * long press calendar
         * tap event
         * qr code
