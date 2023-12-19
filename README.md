@@ -25,13 +25,13 @@ samples, guidance on mobile development, and a full API reference.
           * [x] general edit
           * [ ] general edit - testing
         * [x] join events
-    * user sheet
+    * [x] Share button
+    * user sheet show friends:
         * public events
         * friend events
     * Map 
-      * Cache
       * Filters
-    * Share button
+    * [] deep linking
     * clean up Mappeduser
 - [ ] fix styling
     * account page
@@ -41,4 +41,4 @@ samples, guidance on mobile development, and a full API reference.
         * long press calendar
         * tap event
         * qr code
-     * Launch Icon
+     * [x] Launch Icon
