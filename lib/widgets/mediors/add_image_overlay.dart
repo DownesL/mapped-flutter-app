@@ -241,7 +241,7 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
       }
     }
     event.updatePictureList(updatedList);
-    await fS.addEvent(event);
+    await fS.updateEvent(event);
     setState(() {
       isLoading = false;
     });

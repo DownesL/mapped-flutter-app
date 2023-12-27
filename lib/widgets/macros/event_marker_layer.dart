@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:mapped/firebase_service.dart';
 import 'package:mapped/models/event.dart';
 import 'package:mapped/models/filter_options.dart';
@@ -9,11 +10,11 @@ import 'package:provider/provider.dart';
 
 class EventMarkerLayer extends StatefulWidget {
   const EventMarkerLayer(
-      {super.key, this.extraEvents, required this.onlyPublicEvents, });
+      {super.key, this.extraEvents, required this.onlyPublicEvents, required this.initialCenter, });
 
   final List<Event>? extraEvents;
   final bool onlyPublicEvents;
-
+  final LatLng initialCenter;
 
   @override
   State<EventMarkerLayer> createState() => _EventMarkerLayerState();
@@ -101,7 +102,6 @@ class _EventMarkerLayerState extends State<EventMarkerLayer> {
             ))
         : MarkerLayer(
             markers: [
-              if (currentUser.lastKnownPosition != null)
                 Marker(
                   point: currentUser.lastKnownPosition!,
                   child: const Stack(alignment: Alignment.center, children: [

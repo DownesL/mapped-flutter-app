@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mapped/models/mapped_user.dart';
+import 'package:mapped/widgets/mediors/events_view.dart';
 import 'package:mapped/widgets/micros/friendship_toggle.dart';
 import 'package:mapped/widgets/micros/profile_pic.dart';
 import 'package:mapped/widgets/micros/qr_code_popup.dart';
@@ -21,7 +22,7 @@ class UserSheet extends StatelessWidget {
         children: [
           ListTile(
             leading: ProfilePic(size: 40, mappedUser: mappedUser,),
-            contentPadding: EdgeInsets.all(0),
+            contentPadding: const EdgeInsets.all(0),
             title: Text(
               mappedUser.displayName ?? "Danny",
               style: Theme.of(context).textTheme.titleSmall,
@@ -33,12 +34,21 @@ class UserSheet extends StatelessWidget {
               mappedUser: mappedUser,
             ),
           ),
-          Spacer(),
+          Flexible(
+            flex: 2,
+            child: EventsView(
+              user: mappedUser,
+              useCards: true,
+              eventTypeFilter: false,
+              startDateFilter: false,
+            ),
+          ),
+          const Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               QRCodePopup(url: 'users/${mappedUser.uid}'),
-              Spacer(),
+              const Spacer(),
               IconButton.outlined(
                 style: ButtonStyle(
                   side: MaterialStatePropertyAll(
@@ -56,7 +66,7 @@ class UserSheet extends StatelessWidget {
               FriendshipToggle(mappedUser: mappedUser),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           )
         ],

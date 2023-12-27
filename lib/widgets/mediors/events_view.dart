@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:mapped/firebase_service.dart';
 import 'package:mapped/models/event.dart';
 import 'package:mapped/models/mapped_user.dart';
+import 'package:mapped/widgets/micros/event_card.dart';
 import 'package:mapped/widgets/micros/event_tile.dart';
 import 'package:mapped/widgets/micros/pill.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +15,14 @@ class EventsView extends StatefulWidget {
     super.key,
     this.startDateFilter = false,
     this.eventTypeFilter = false,
+    this.useCards = false,
+    this.user,
   });
 
   final bool startDateFilter;
   final bool eventTypeFilter;
+  final bool useCards;
+  final MappedUser? user;
 
   @override
   State<EventsView> createState() => _EventsViewState();
@@ -50,12 +55,37 @@ class _EventsViewState extends State<EventsView> {
   }) async {
     _selectedEventType.value =
         eventType == _selectedEventType.value ? null : eventType;
-    _selectedEvents.value = await fS.getUserEvents(
-          mUser,
-          eventType: widget.eventTypeFilter ? _selectedEventType.value : null,
-          after: widget.startDateFilter ? _after.value : null,
-        ) ??
-        <Event>[];
+    if (widget.user != null) {
+      List<Event> arr = [];
+      arr.addAll(
+        await fS.getUserEvents(
+              widget.user!,
+              eventType: EventType.public,
+              limit: 5,
+              after: _after.value,
+            ) ??
+            <Event>[],
+      );
+      if (mUser.friends != null && mUser.friends!.contains(widget.user!.uid)) {
+        arr.addAll(
+          await fS.getUserEvents(
+                widget.user!,
+                eventType: EventType.friend,
+                after: _after.value,
+                limit: 5,
+              ) ??
+              <Event>[],
+        );
+      }
+      _selectedEvents.value = arr;
+    } else {
+      _selectedEvents.value = await fS.getUserEvents(
+            mUser,
+            eventType: widget.eventTypeFilter ? _selectedEventType.value : null,
+            after: widget.startDateFilter ? _after.value : null,
+          ) ??
+          <Event>[];
+    }
   }
 
   @override
@@ -136,28 +166,26 @@ class _EventsViewState extends State<EventsView> {
         const SizedBox(
           height: 8.0,
         ),
-        Flexible(
-          fit: FlexFit.loose,
+        Expanded(
           child: ValueListenableBuilder<List<Event>>(
             valueListenable: _selectedEvents,
             builder: (context, events, _) {
-              return events.isEmpty? const Text("No events here :)") :ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: min(limit, events.length),
-                itemBuilder: (context, index) {
-                  return EventTile(
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      '/home/event',
-                      arguments: EventArguments(event: events[index]),
-                    ),
-                    accentColor: Color(
-                        mUser.labels!.eventLabelColor(events[index].eventType)),
-                    event: events[index],
-                  );
-                },
-              );
+              return events.isEmpty
+                  ? const SizedBox(
+                      height: 200,
+                      child: Center(child: Text("No events here :)")),
+                    )
+                  : ListView(
+                      scrollDirection:
+                          widget.useCards ? Axis.horizontal : Axis.vertical,
+                      shrinkWrap: !widget.useCards,
+                      children: [
+                        for (int index = 0;
+                            index < min(limit, events.length);
+                            index++)
+                          renderEvent(events[index])
+                      ],
+                    );
             },
             child: const Text("No Events Found"),
           ),
@@ -179,6 +207,29 @@ class _EventsViewState extends State<EventsView> {
             },
           ),
       ],
+    );
+  }
+
+  Widget renderEvent(Event event) {
+    if (widget.useCards) {
+      return EventCard(
+        onTap: () => Navigator.pushNamed(
+          context,
+          '/home/event',
+          arguments: EventArguments(event: event),
+        ),
+        accentColor: Color(mUser.labels!.eventLabelColor(event.eventType)),
+        event: event,
+      );
+    }
+    return EventTile(
+      onTap: () => Navigator.pushNamed(
+        context,
+        '/home/event',
+        arguments: EventArguments(event: event),
+      ),
+      accentColor: Color(mUser.labels!.eventLabelColor(event.eventType)),
+      event: event,
     );
   }
 }

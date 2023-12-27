@@ -86,10 +86,11 @@ class _MapOverviewPageState extends State<MapOverviewPage>
     var position = await getCurrentPosition(_geolocatorPlatform);
     if (position != null) {
       this.position = position;
-      if (widget.event == null) {
+      if (widget.event == null && mounted) {
         animatedMapController.mapController.move(position, 16);
       }
       mUser?.lastKnownPosition = position;
+      if (mounted) setState(() {});
     }
   }
 
@@ -116,10 +117,12 @@ class _MapOverviewPageState extends State<MapOverviewPage>
                 // 'https://api.mapbox.com/styles/v1/ldownes/clomq10mb00ax01o4fb526cvf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibGRvd25lcyIsImEiOiJjbG9tcG1rNGkwMHBnMmtwcW9tendhcjEzIn0.JiuiI569O8sATOuh5yt5Yw',
                 userAgentPackageName: 'com.example.app',
               ),
-              EventMarkerLayer(
-                extraEvents: widget.event != null ? [widget.event!] : null,
-                onlyPublicEvents: widget.discoverPage,
-              ),
+              if (mUser!.lastKnownPosition != null)
+                EventMarkerLayer(
+                  extraEvents: widget.event != null ? [widget.event!] : null,
+                  initialCenter: mUser!.lastKnownPosition!,
+                  onlyPublicEvents: widget.discoverPage,
+                ),
               const RichAttributionWidget(
                 showFlutterMapAttribution: false,
                 alignment: AttributionAlignment.bottomLeft,

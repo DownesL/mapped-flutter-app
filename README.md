@@ -28,7 +28,7 @@ samples, guidance on mobile development, and a full API reference.
     * [x] Share button
     * [x] Map 
       * Filters
-    * [ ] user sheet show friends:
+    * [x] user sheet show friends:
         * public events
         * friend events
     * [ ] deep linking
@@ -37,8 +37,4 @@ samples, guidance on mobile development, and a full API reference.
     * [ ] account page
     * [x] home
 - [ ] ux
-     * [ ] tooltips
-        * long press calendar
-        * tap event
-        * qr code
      * [x] Launch Icon

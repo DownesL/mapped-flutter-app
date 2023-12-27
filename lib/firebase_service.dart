@@ -339,12 +339,15 @@ class FirebaseService {
     return list;
   }
 
-  Future<void> addEvent(Event event) async {
+  Future<void> addEvent(MappedUser mUser, Event event) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     if (event.eid.isNotEmpty) {
       await db.collection("events").doc(event.eid).set(event.toFirestore());
     } else {
-      await db.collection("events").add(event.toFirestore());
+      DocumentReference docRef = await db.collection("events").add(event.toFirestore());
+      mUser.organisedEventsIDs!.add(docRef.id);
+      mUser.attendingEventsIDs!.add(docRef.id);
+      updateUserData(mUser);
     }
   }
 }

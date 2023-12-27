@@ -25,6 +25,7 @@ class UserInfoWidget extends StatelessWidget {
         children: [
           ProfilePic(size: size),
           const SizedBox(width: 16.0),
+          if (mappedUser != null && mappedUser!.isNotEmpty)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

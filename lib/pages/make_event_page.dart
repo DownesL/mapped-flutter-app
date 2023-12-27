@@ -5,6 +5,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:mapped/firebase_service.dart';
 import 'package:mapped/models/date_picker_arguments.dart';
 import 'package:mapped/models/event.dart';
+import 'package:mapped/models/mapped_user.dart';
+import 'package:provider/provider.dart';
 
 class MakeEventPage extends StatefulWidget {
   const MakeEventPage(
@@ -519,7 +521,8 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
 
   Future<void> saveEvent() async {
     var user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
+    MappedUser? mappedUser = context.read<MappedUser>();
+    if (mappedUser.isNotEmpty) {
       _address?.houseNumber = numberController.text;
       Event event = Event(
         eid: widget.event?.eid ?? '',
@@ -527,8 +530,8 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
         startDate: _selectedStartDate.value,
         endDate: _selectedEndDate.value,
         address: _address!,
-        attendeeIDs: [user.uid],
-        organiserIDs: [user.uid],
+        attendeeIDs: [mappedUser.uid!],
+        organiserIDs: [mappedUser.uid!],
         pictureList: [],
         eventType: widget.eventType,
         description: descriptionController.text,
@@ -536,7 +539,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
       );
 
       var fS = FirebaseService();
-      await fS.addEvent(event);
+      await fS.addEvent(mappedUser, event);
       if (mounted) {
         if (widget.event?.eid != null) {
           Navigator.pushNamedAndRemoveUntil(

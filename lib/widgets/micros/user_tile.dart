@@ -15,7 +15,10 @@ class UserTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MappedUser cU = context.watch<MappedUser>();
-    bool areFriends = cU.friends!.contains(mappedUser.uid);
+    bool areFriends = false;
+    if (cU != null) {
+      areFriends = cU.friends!.contains(mappedUser.uid);
+    }
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       decoration: BoxDecoration(
@@ -29,7 +32,10 @@ class UserTile extends StatelessWidget {
           '/home/user',
           arguments: UserArguments(mUser: mappedUser),
         ),
-        leading: ProfilePic(size: 40, mappedUser: mappedUser,),
+        leading: ProfilePic(
+          size: 40,
+          mappedUser: mappedUser,
+        ),
         title: Text(
           mappedUser.displayName ?? "Danny",
           style: Theme.of(context).textTheme.titleSmall,
