@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mapped/models/mapped_user.dart';
 import 'package:mapped/widgets/micros/make_event_button.dart';
+import 'package:provider/provider.dart';
 
 class MakeEventButtons extends StatefulWidget {
   const MakeEventButtons({super.key});
@@ -13,6 +15,10 @@ class _MakeEventButtonsState extends State<MakeEventButtons> {
 
   @override
   Widget build(BuildContext context) {
+    MappedUser user = context.watch<MappedUser>();
+    Color public = Color(user.labels!.public);
+    Color private = Color(user.labels!.private);
+    Color friend = Color(user.labels!.friend);
     return Container(
       padding: const EdgeInsets.only(
         bottom: 8.0,
@@ -24,19 +30,19 @@ class _MakeEventButtonsState extends State<MakeEventButtons> {
         children: [
           if (!eventBtnsHidden)
             MakeEventButton(
-              color: Theme.of(context).colorScheme.primary,
+              color: public,
               label: 'New Public Event',
               onPressed: () => Navigator.pushNamed(context, '/make_event/public'),
             ),
           if (!eventBtnsHidden)
             MakeEventButton(
-              color: Theme.of(context).colorScheme.secondary,
+              color: friend,
               label: 'New Friend Event',
               onPressed: () => Navigator.pushNamed(context, '/make_event/friend'),
             ),
           if (!eventBtnsHidden)
             MakeEventButton(
-              color: Theme.of(context).colorScheme.tertiary,
+              color: private,
               label: 'New Private Event',
               onPressed: () => Navigator.pushNamed(context, '/make_event/private'),
             ),

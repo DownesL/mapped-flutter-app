@@ -26,7 +26,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
   @override
   String? get restorationId => widget.restorationId;
 
-  final nameController = TextEditingController();
+  final titleController = TextEditingController();
   final numberController = TextEditingController();
   final descriptionController = TextEditingController();
   final locationController = TextEditingController();
@@ -266,7 +266,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
   void initState() {
     if (widget.event != null) {
       var e = widget.event!;
-      nameController.text = e.name;
+      titleController.text = e.name;
       numberController.text = e.address.houseNumber ?? "1";
       descriptionController.text = e.description;
       _address = e.address;
@@ -279,6 +279,8 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
 
   @override
   Widget build(BuildContext context) {
+    MappedUser mUser = context.read<MappedUser>();
+    Color color = Color(mUser.labels!.eventLabelColor(widget.eventType));
     return Scaffold(
       appBar: AppBar(
         title: Text('New ${widget.eventType.value} Event'),
@@ -295,16 +297,23 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: nameController,
+                      controller: titleController,
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Title:'),
+                      cursorColor: color,
+                      decoration: InputDecoration(
+                        labelText: 'Title:',
+                        floatingLabelStyle: TextStyle(color: color),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: color),
+                        ),
+                      ),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter a name';
+                          return 'Please enter a title';
                         }
                         if (value.length > 50) {
-                          return 'Please enter a name shorter than 50 characters';
+                          return 'Please enter a title shorter than 50 characters';
                         }
                         return null;
                       },
@@ -337,9 +346,11 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                                 _restorableStartTimePickerRouteFuture.present();
                               },
                               icon: Icon(Icons.access_time_outlined,
-                                  color: Theme.of(context).primaryColor),
+                                  color: color),
                               label: Text(
-                                  _selectedStartTime.value.format(context)),
+                                _selectedStartTime.value.format(context),
+                                style: TextStyle(color: color),
+                              ),
                             ),
                             const SizedBox(
                               width: 8,
@@ -348,10 +359,11 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                               onPressed: () {
                                 _restorableStartDatePickerRouteFuture.present();
                               },
-                              icon: Icon(Icons.calendar_today,
-                                  color: Theme.of(context).primaryColor),
+                              icon: Icon(Icons.calendar_today, color: color),
                               label: Text(
-                                  '${_selectedStartDate.value.day}/${_selectedStartDate.value.month}/${_selectedStartDate.value.year}'),
+                                '${_selectedStartDate.value.day}/${_selectedStartDate.value.month}/${_selectedStartDate.value.year}',
+                                style: TextStyle(color: color),
+                              ),
                             ),
                           ],
                         ),
@@ -372,9 +384,11 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                                 _restorableEndTimePickerRouteFuture.present();
                               },
                               icon: Icon(Icons.access_time_outlined,
-                                  color: Theme.of(context).primaryColor),
-                              label:
-                                  Text(_selectedEndTime.value.format(context)),
+                                  color: color),
+                              label: Text(
+                                _selectedEndTime.value.format(context),
+                                style: TextStyle(color: color),
+                              ),
                             ),
                             const SizedBox(
                               width: 8,
@@ -383,10 +397,11 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                               onPressed: () {
                                 _restorableEndDatePickerRouteFuture.present();
                               },
-                              icon: Icon(Icons.calendar_today,
-                                  color: Theme.of(context).primaryColor),
+                              icon: Icon(Icons.calendar_today, color: color),
                               label: Text(
-                                  '${_selectedEndDate.value.day}/${_selectedEndDate.value.month}/${_selectedEndDate.value.year}'),
+                                '${_selectedEndDate.value.day}/${_selectedEndDate.value.month}/${_selectedEndDate.value.year}',
+                                style: TextStyle(color: color),
+                              ),
                             ),
                           ],
                         ),
@@ -401,9 +416,14 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                       textAlign: TextAlign.start,
                       textInputAction: TextInputAction.next,
                       controller: descriptionController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      cursorColor: color,
+                      decoration: InputDecoration(
                         labelText: 'Description:',
+                        floatingLabelStyle: TextStyle(color: color),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: color),
+                        ),
                       ),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
@@ -427,8 +447,15 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                         });
                         if (data.isNotEmpty) searchLocation(data);
                       },
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Address:'),
+                      cursorColor: color,
+                      decoration: InputDecoration(
+                        labelText: 'Address:',
+                        floatingLabelStyle: TextStyle(color: color),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: color),
+                        ),
+                      ),
                       validator: (String? value) {
                         if (value == null ||
                             value.isEmpty ||
@@ -452,9 +479,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                                         title: Text(
                                           item.displayName,
                                           style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary,
+                                            color: color,
                                           ),
                                         ),
                                         onTap: () {
@@ -476,8 +501,15 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                       keyboardType: const TextInputType.numberWithOptions(
                           decimal: false, signed: false),
                       textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Number:'),
+                      cursorColor: color,
+                      decoration: InputDecoration(
+                        labelText: 'Number:',
+                        floatingLabelStyle: TextStyle(color: color),
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: color),
+                        ),
+                      ),
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a number';
@@ -505,7 +537,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                   saveEvent();
                 }
               },
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: color,
               label: Text(
                 'Save Event',
                 style:
@@ -526,7 +558,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
       _address?.houseNumber = numberController.text;
       Event event = Event(
         eid: widget.event?.eid ?? '',
-        name: nameController.text,
+        name: titleController.text,
         startDate: _selectedStartDate.value,
         endDate: _selectedEndDate.value,
         address: _address!,
