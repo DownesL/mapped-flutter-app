@@ -10,6 +10,7 @@ class EventsPage extends StatefulWidget {
 }
 
 class _EventsPageState extends State<EventsPage> {
+  //todo: style this shit: buttons in custom colours
   @override
   Widget build(BuildContext context) {
     return Scaffold(

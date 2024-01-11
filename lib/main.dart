@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mapped/firebase_options.dart';
 import 'package:mapped/firebase_service.dart';
@@ -20,6 +21,10 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -114,12 +119,12 @@ class Mapped extends StatelessWidget {
           foregroundColor: const Color(0xfff1f2f3),
         ),
         colorScheme:
-            ColorScheme.fromSeed(seedColor: const Color(0xffc2355c)).copyWith(
+            ColorScheme.fromSeed(seedColor: const Color(0xffe13462)).copyWith(
           background: const Color(0xff171414),
-          primary: const Color(0xffc2355c),
+          primary: const Color(0xffe13462),
           primaryContainer: const Color(0xF53D1414),
           //contrast of: 4.9:1
-          secondary: const Color(0xff285091),
+          secondary: const Color(0xff2e78e7),
           secondaryContainer: const Color(0xFF1D2126),
           //contrast of: 5.46:1
           tertiary: const Color(0xff32c27f),
@@ -140,6 +145,10 @@ class Mapped extends StatelessWidget {
           tertiaryContainer: const Color(0xffDCF4E6), //contrast of: 4.56:1*/
         ),
       ),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark
+      // ),
+      // themeMode: ThemeMode.system,
       home: const NavigationContainer(),
       initialRoute: '/',
       routes: {

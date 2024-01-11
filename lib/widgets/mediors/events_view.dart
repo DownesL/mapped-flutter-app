@@ -88,6 +88,22 @@ class _EventsViewState extends State<EventsView> {
     }
   }
 
+  Widget _builder(context, events, _) {
+    return events.isEmpty
+        ? const SizedBox(
+            height: 200,
+            child: Center(child: Text("No events here :)")),
+          )
+        : ListView(
+            scrollDirection: widget.useCards ? Axis.horizontal : Axis.vertical,
+            shrinkWrap: !widget.useCards,
+            children: [
+              for (int index = 0; index < min(limit, events.length); index++)
+                renderEvent(events[index])
+            ],
+          );
+  }
+
   @override
   void initState() {
     mUser = context.read<MappedUser>();
@@ -159,35 +175,18 @@ class _EventsViewState extends State<EventsView> {
                       days: 7,
                     ),
                   ),
-                )})"),
+                )})")
               ]),
             ),
           ),
         const SizedBox(
           height: 8.0,
         ),
-        Expanded(
+        Flexible(
+          fit: widget.useCards ? FlexFit.tight : FlexFit.loose,
           child: ValueListenableBuilder<List<Event>>(
             valueListenable: _selectedEvents,
-            builder: (context, events, _) {
-              return events.isEmpty
-                  ? const SizedBox(
-                      height: 200,
-                      child: Center(child: Text("No events here :)")),
-                    )
-                  : ListView(
-                      scrollDirection:
-                          widget.useCards ? Axis.horizontal : Axis.vertical,
-                      shrinkWrap: !widget.useCards,
-                      children: [
-                        for (int index = 0;
-                            index < min(limit, events.length);
-                            index++)
-                          renderEvent(events[index])
-                      ],
-                    );
-            },
-            child: const Text("No Events Found"),
+            builder: _builder,
           ),
         ),
         if (widget.startDateFilter)
