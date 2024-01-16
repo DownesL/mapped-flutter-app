@@ -109,6 +109,8 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
               'Set Filter parameters',
               style: Theme.of(context).textTheme.titleLarge,
             ),
+            SizedBox(height: 16,),
+            SizedBox(height: 16,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -124,6 +126,7 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
                 ),
               ],
             ),
+            SizedBox(height: 16,),
             TextFormField(
               controller: _limitController,
               keyboardType: TextInputType.number,
@@ -138,6 +141,7 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
                 }
               },
             ),
+            SizedBox(height: 16,),
             SizedBox(height: 8,),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -155,6 +159,7 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
                   child: const Text('Cancel'),
                   onPressed: () => widget.closeFunction(),
                 ),
+                SizedBox(width: 8.0,),
                 FilledButton(
                   child: const Text('Save'),
                   onPressed: () {

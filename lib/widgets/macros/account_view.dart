@@ -143,7 +143,7 @@ class _AccountViewState extends State<AccountView> {
           Container(
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background.withBlue(40).withGreen(40).withRed(40),
+                color: Colors.white60,
                 border: Border.all(
                   color: Colors.black12,
                 ),

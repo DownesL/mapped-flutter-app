@@ -38,7 +38,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
   String? dateErrorMessage;
 
   final RestorableDateTime _selectedStartDate =
-      RestorableDateTime(DateTime.now());
+      RestorableDateTime(DateTime.now().add(Duration(minutes: 15)));
   late final RestorableRouteFuture<DateTime?>
       _restorableStartDatePickerRouteFuture = RestorableRouteFuture<DateTime?>(
     onComplete: _selectStartDate,
@@ -194,9 +194,9 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
           restorationId: 'date_picker_dialog',
           initialEntryMode: DatePickerEntryMode.calendarOnly,
           initialDate: DateTime.fromMillisecondsSinceEpoch(
-              args.currentDate ?? DateTime.now().millisecondsSinceEpoch),
+              args.currentDate ?? DateTime.now().add(const Duration(minutes: 15)).millisecondsSinceEpoch),
           firstDate: DateTime.fromMillisecondsSinceEpoch(
-              args.startDate ?? DateTime.now().millisecondsSinceEpoch),
+              args.startDate ?? DateTime.now().add(const Duration(minutes: 15)).millisecondsSinceEpoch),
           lastDate: DateTime(2030),
         );
       },

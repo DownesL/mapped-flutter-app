@@ -81,29 +81,35 @@ class Mapped extends StatelessWidget {
               titleLarge: GoogleFonts.blinker(
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xfff1f2f3)),
+                  // color: const Color(0xfff1f2f3),
+              ),
               titleMedium: GoogleFonts.blinker(
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xfff1f2f3)),
+                  // color: const Color(0xfff1f2f3),
+              ),
               titleSmall: GoogleFonts.blinker(
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xfff1f2f3)),
+                  // color: const Color(0xfff1f2f3),
+              ),
               labelLarge: GoogleFonts.blinker(
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xfff1f2f3)),
+                  // color: const Color(0xfff1f2f3),
+              ),
               labelMedium: GoogleFonts.blinker(
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xfff1f2f3)),
+                  // color: const Color(0xfff1f2f3),
+              ),
               labelSmall: GoogleFonts.blinker(
                   letterSpacing: 1.3,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xfff1f2f3)),
-            )
-            .apply(
+                  // color: const Color(0xfff1f2f3),
+              ),
+            ),
+/*            .apply(
               bodyColor: const Color(0xfff1f2f3),
               displayColor: const Color(0xfff1f2f3),
               decorationColor: const Color(0xfff1f2f3),
@@ -131,9 +137,9 @@ class Mapped extends StatelessWidget {
           tertiaryContainer: const Color(0xff1C3426),
           surface: const Color(0xfff1f2f3),
           surfaceTint: const Color(0xfff1f2f3),
-          surfaceVariant: const Color(0xfff1f2f3),
+          surfaceVariant: const Color(0xfff1f2f3),*/
 
-/*          ColorScheme.fromSeed(seedColor: const Color(0xff912841)).copyWith(
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff912841)).copyWith(
           background: Theme.of(context).colorScheme.background,
           primary: const Color(0xff912841),
           primaryContainer: const Color(0xF5F6B9C5),
@@ -142,7 +148,7 @@ class Mapped extends StatelessWidget {
           secondaryContainer: const Color(0xFFC2D7FF),
           //contrast of: 5.46:1
           tertiary: const Color(0xff237a51),
-          tertiaryContainer: const Color(0xffDCF4E6), //contrast of: 4.56:1*/
+          tertiaryContainer: const Color(0xffDCF4E6), //contrast of: 4.56:1
         ),
       ),
       // darkTheme: ThemeData(

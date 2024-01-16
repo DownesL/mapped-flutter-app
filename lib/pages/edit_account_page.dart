@@ -114,147 +114,158 @@ class _AccountPageState extends State<AccountPage> {
           padding: const EdgeInsets.symmetric(
             horizontal: 8.0,
           ),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 16.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  !kIsWeb && defaultTargetPlatform == TargetPlatform.android
-                      ? FutureBuilder<void>(
-                          future: retrieveLostData(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<void> snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                              case ConnectionState.waiting:
-                                return const Text(
-                                  'You have not yet picked an image.',
-                                  textAlign: TextAlign.center,
-                                );
-                              case ConnectionState.done:
-                                return iU.handlePreview(
-                                      isVideo,
-                                      _mediaFileList,
-                                      _retrieveDataError,
-                                      _pickImageError,
-                                    ) ??
-                                    ProfilePic(size: 100);
-                              case ConnectionState.active:
-                                if (snapshot.hasError) {
-                                  return Text(
-                                    'Pick image/video error: ${snapshot.error}}',
-                                    textAlign: TextAlign.center,
-                                  );
-                                } else {
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(
+                  height: 16.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    defaultTargetPlatform == TargetPlatform.android
+                        ? FutureBuilder<void>(
+                            future: retrieveLostData(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<void> snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
                                   return const Text(
                                     'You have not yet picked an image.',
                                     textAlign: TextAlign.center,
                                   );
-                                }
-                            }
-                          },
-                        )
-                      : iU.handlePreview(
-                            isVideo,
-                            _mediaFileList,
-                            _retrieveDataError,
-                            _pickImageError,
-                          ) ??
-                          ProfilePic(size: 100),
-                  ElevatedButton.icon(
-                    icon: const Icon(
-                      Icons.camera_alt_outlined,
-                      size: 16,
+                                case ConnectionState.done:
+                                  return iU.handlePreview(
+                                        isVideo,
+                                        _mediaFileList,
+                                        _retrieveDataError,
+                                        _pickImageError,
+                                      ) ??
+                                      ProfilePic(size: 100);
+                                case ConnectionState.active:
+                                  if (snapshot.hasError) {
+                                    return Text(
+                                      'Pick image/video error: ${snapshot.error}}',
+                                      textAlign: TextAlign.center,
+                                    );
+                                  } else {
+                                    return const Text(
+                                      'You have not yet picked an image.',
+                                      textAlign: TextAlign.center,
+                                    );
+                                  }
+                              }
+                            },
+                          )
+                        : iU.handlePreview(
+                              isVideo,
+                              _mediaFileList,
+                              _retrieveDataError,
+                              _pickImageError,
+                            ) ??
+                            ProfilePic(size: 100),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.camera_alt_outlined,
+                              size: 16,
+                            ),
+                            label: const Text('Take new'),
+                            onPressed: () => _onImageButtonPressed(
+                                ImageSource.camera,
+                                context: context),
+                          ),
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.photo_library_outlined),
+                            label: const Text('Library'),
+                            onPressed: () => _onImageButtonPressed(
+                                ImageSource.gallery,
+                                context: context),
+                          ),
+                        ])
+                  ],
+                ),
+                const SizedBox(
+                  height: 32.0,
+                ),
+                Form(
+                    child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Display Name',
+                      ),
+                      controller: displayNameController,
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a dispaly name';
+                        }
+                        return null;
+                      },
                     ),
-                    label: const Text('Take new'),
-                    onPressed: () => _onImageButtonPressed(ImageSource.camera,
-                        context: context),
-                  ),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.photo_library_outlined),
-                    label: const Text('Library'),
-                    onPressed: () => _onImageButtonPressed(ImageSource.gallery,
-                        context: context),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 32.0,
-              ),
-              Form(
-                  child: Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Display Name',
+                    const SizedBox(
+                      height: 16.0,
                     ),
-                    controller: displayNameController,
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a dispaly name';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Email',
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Email',
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      controller: emailController,
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a email name';
+                        }
+                        var match = RegExp(
+                                r"[a-zA-Z0-9._\-]{0,15}@[a-z\-]{2,8}\.[a-z.]{2,6}")
+                            .stringMatch(value);
+                        if (match == null || match.isEmpty) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    controller: emailController,
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a email name';
-                      }
-                      var match = RegExp(
-                              r"[a-zA-Z0-9._\-]{0,15}@[a-z\-]{2,8}\.[a-z.]{2,6}")
-                          .stringMatch(value);
-                      if (match == null || match.isEmpty) {
-                        return 'Please enter a valid email address';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-              )),
-              ChangeNotifierProvider.value(
-                value: newLabels,
-                child: const ColorSelection(),
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.red),
-                      foregroundColor: MaterialStatePropertyAll(Colors.white),
+                  ],
+                )),
+                ChangeNotifierProvider.value(
+                  value: newLabels,
+                  child: const ColorSelection(),
+                ),
+                SizedBox(
+                  height: 64,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.red),
+                        foregroundColor: MaterialStatePropertyAll(Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cancel"),
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Cancel"),
-                  ),
-                  //todo: style this shit
-                  ElevatedButton(
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(Colors.green),
-                      foregroundColor: MaterialStatePropertyAll(Colors.white),
+                    ElevatedButton(
+                      style: const ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.green),
+                        foregroundColor: MaterialStatePropertyAll(Colors.white),
+                      ),
+                      onPressed: () => saveAccount(),
+                      child: const Text("Save"),
                     ),
-                    onPressed: () => saveAccount(),
-                    child: const Text("Save"),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           )),
     );
   }
