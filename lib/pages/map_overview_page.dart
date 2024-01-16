@@ -113,8 +113,9 @@ class _MapOverviewPageState extends State<MapOverviewPage>
             children: [
               TileLayer(
                 urlTemplate:
-                    // 'https://api.mapbox.com/styles/v1/ldownes/clpn3duft00ya01pk9bel0jer/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibGRvd25lcyIsImEiOiJjbG9tcG1rNGkwMHBnMmtwcW9tendhcjEzIn0.JiuiI569O8sATOuh5yt5Yw',
-                'https://api.mapbox.com/styles/v1/ldownes/clomq10mb00ax01o4fb526cvf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibGRvd25lcyIsImEiOiJjbG9tcG1rNGkwMHBnMmtwcW9tendhcjEzIn0.JiuiI569O8sATOuh5yt5Yw',
+                  'https://api.mapbox.com/styles/v1/ldownes/clpsbuhnv019q01pobmbkd0al/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibGRvd25lcyIsImEiOiJjbG9tcG1rNGkwMHBnMmtwcW9tendhcjEzIn0.JiuiI569O8sATOuh5yt5Yw',
+                    // dark: 'https://api.mapbox.com/styles/v1/ldownes/clpn3duft00ya01pk9bel0jer/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibGRvd25lcyIsImEiOiJjbG9tcG1rNGkwMHBnMmtwcW9tendhcjEzIn0.JiuiI569O8sATOuh5yt5Yw',
+                    // light base: 'https://api.mapbox.com/styles/v1/ldownes/clomq10mb00ax01o4fb526cvf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibGRvd25lcyIsImEiOiJjbG9tcG1rNGkwMHBnMmtwcW9tendhcjEzIn0.JiuiI569O8sATOuh5yt5Yw',
                 userAgentPackageName: 'com.example.app',
               ),
               if (mUser!.lastKnownPosition != null)
