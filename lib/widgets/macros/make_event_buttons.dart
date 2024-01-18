@@ -32,19 +32,19 @@ class _MakeEventButtonsState extends State<MakeEventButtons> {
             MakeEventButton(
               color: public,
               label: 'New Public Event',
-              onPressed: () => Navigator.pushNamed(context, '/make_event/public'),
+              onPressed: () => Navigator.pushNamed(context, '/events/public/add'),
             ),
           if (!eventBtnsHidden)
             MakeEventButton(
               color: friend,
               label: 'New Friend Event',
-              onPressed: () => Navigator.pushNamed(context, '/make_event/friend'),
+              onPressed: () => Navigator.pushNamed(context, '/events/friend/add'),
             ),
           if (!eventBtnsHidden)
             MakeEventButton(
               color: private,
               label: 'New Private Event',
-              onPressed: () => Navigator.pushNamed(context, '/make_event/private'),
+              onPressed: () => Navigator.pushNamed(context, '/events/private/add'),
             ),
           FloatingActionButton(
             onPressed: () {

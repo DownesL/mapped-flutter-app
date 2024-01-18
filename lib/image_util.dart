@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mapped/widgets/micros/profile_pic.dart';
 
 class ImageUtil {
   Future<void> displayPickImageDialog(
@@ -29,7 +28,7 @@ class ImageUtil {
 
   Text? getRetrieveErrorWidget(String? retrieveDataError) {
     if (retrieveDataError != null) {
-      final Text result = Text(retrieveDataError!);
+      final Text result = Text(retrieveDataError);
       retrieveDataError = null;
       return result;
     }

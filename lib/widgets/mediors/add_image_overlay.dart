@@ -109,7 +109,7 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
           borderRadius: BorderRadius.circular(20),
         ),
         width: MediaQuery.sizeOf(context).width * .9,
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         margin: EdgeInsets.symmetric(
           vertical: MediaQuery.sizeOf(context).height * .2,
           horizontal: MediaQuery.sizeOf(context).width * .1,
@@ -124,7 +124,7 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
             Flexible(
               child: Container(
                 height: 250,
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 25,
                 ),
                 width: double.maxFinite,
@@ -138,7 +138,7 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
                           alignment: Alignment.center,
                           children: [
                             Container(
-                              margin: EdgeInsets.only(right: 8.0),
+                              margin: const EdgeInsets.only(right: 8.0),
                               width: 250,
                               height: 200,
                               decoration: BoxDecoration(
@@ -164,11 +164,11 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
                                 }
                                 setState(() {});
                               },
-                              icon: Icon(Icons.close),
-                              style: ButtonStyle(
+                              icon: const Icon(Icons.close),
+                              style: const ButtonStyle(
                                 visualDensity: VisualDensity.compact,
                               ),
-                              label: Text("Remove Picture"),
+                              label: const Text("Remove Picture"),
                             )
                           ],
                         ),
@@ -194,8 +194,8 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 if (isLoading)
-                  CircularProgressIndicator(),
-                Spacer(),
+                  const CircularProgressIndicator(),
+                const Spacer(),
                 OutlinedButton(
                   style: ButtonStyle(
                     side: MaterialStatePropertyAll(
@@ -204,8 +204,8 @@ class _AddImageOverlayState extends State<AddImageOverlay> {
                       ),
                     ),
                   ),
-                  child: const Text('Cancel'),
                   onPressed: widget.closeFunction,
+                  child: const Text('Cancel'),
                 ),
                 FilledButton(
                   child: const Text('Save'),

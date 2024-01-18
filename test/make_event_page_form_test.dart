@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geocoder_buddy/geocoder_buddy.dart';
 import 'package:mapped/models/event.dart';
 import 'package:mapped/pages/make_event_page.dart';
-import 'package:mockito/annotations.dart';
 
 main() {
   testWidgets("submit empty form test", (WidgetTester tester) async {

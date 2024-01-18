@@ -76,39 +76,38 @@ class Mapped extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        textTheme: GoogleFonts.assistantTextTheme()
-            .copyWith(
-              titleLarge: GoogleFonts.blinker(
-                  letterSpacing: 1.3,
-                  fontWeight: FontWeight.w700,
-                  // color: const Color(0xfff1f2f3),
-              ),
-              titleMedium: GoogleFonts.blinker(
-                  letterSpacing: 1.3,
-                  fontWeight: FontWeight.w700,
-                  // color: const Color(0xfff1f2f3),
-              ),
-              titleSmall: GoogleFonts.blinker(
-                  letterSpacing: 1.3,
-                  fontWeight: FontWeight.w700,
-                  // color: const Color(0xfff1f2f3),
-              ),
-              labelLarge: GoogleFonts.blinker(
-                  letterSpacing: 1.3,
-                  fontWeight: FontWeight.w700,
-                  // color: const Color(0xfff1f2f3),
-              ),
-              labelMedium: GoogleFonts.blinker(
-                  letterSpacing: 1.3,
-                  fontWeight: FontWeight.w700,
-                  // color: const Color(0xfff1f2f3),
-              ),
-              labelSmall: GoogleFonts.blinker(
-                  letterSpacing: 1.3,
-                  fontWeight: FontWeight.w700,
-                  // color: const Color(0xfff1f2f3),
-              ),
-            ),
+        textTheme: GoogleFonts.assistantTextTheme().copyWith(
+          titleLarge: GoogleFonts.blinker(
+            letterSpacing: 1.3,
+            fontWeight: FontWeight.w700,
+            // color: const Color(0xfff1f2f3),
+          ),
+          titleMedium: GoogleFonts.blinker(
+            letterSpacing: 1.3,
+            fontWeight: FontWeight.w700,
+            // color: const Color(0xfff1f2f3),
+          ),
+          titleSmall: GoogleFonts.blinker(
+            letterSpacing: 1.3,
+            fontWeight: FontWeight.w700,
+            // color: const Color(0xfff1f2f3),
+          ),
+          labelLarge: GoogleFonts.blinker(
+            letterSpacing: 1.3,
+            fontWeight: FontWeight.w700,
+            // color: const Color(0xfff1f2f3),
+          ),
+          labelMedium: GoogleFonts.blinker(
+            letterSpacing: 1.3,
+            fontWeight: FontWeight.w700,
+            // color: const Color(0xfff1f2f3),
+          ),
+          labelSmall: GoogleFonts.blinker(
+            letterSpacing: 1.3,
+            fontWeight: FontWeight.w700,
+            // color: const Color(0xfff1f2f3),
+          ),
+        ),
 /*            .apply(
               bodyColor: const Color(0xfff1f2f3),
               displayColor: const Color(0xfff1f2f3),
@@ -139,7 +138,8 @@ class Mapped extends StatelessWidget {
           surfaceTint: const Color(0xfff1f2f3),
           surfaceVariant: const Color(0xfff1f2f3),*/
 
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff912841)).copyWith(
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: const Color(0xff912841)).copyWith(
           background: Theme.of(context).colorScheme.background,
           primary: const Color(0xff912841),
           primaryContainer: const Color(0xF5F6B9C5),
@@ -185,17 +185,38 @@ class Mapped extends StatelessWidget {
             ),
         '/account': (context) => const NavigationContainer(givenIndex: 3),
         '/account/edit': (context) => const AccountPage(),
-        '/make_event/public': (context) => const MakeEventPage(
+        '/events/public/add': (context) => const MakeEventPage(
               eventType: EventType.public,
               restorationId: "publicEvent",
             ),
-        '/make_event/friend': (context) => const MakeEventPage(
+        '/events/friend/add': (context) => const MakeEventPage(
               eventType: EventType.friend,
               restorationId: "friendEvent",
             ),
-        '/make_event/private': (context) => const MakeEventPage(
+        '/events/private/add': (context) => const MakeEventPage(
               eventType: EventType.private,
               restorationId: "privateEvent",
+            ),
+        '/events/public/edit': (context) => MakeEventPage(
+              eventType: EventType.public,
+              restorationId: "publicEvent",
+              event:
+                  (ModalRoute.of(context)!.settings.arguments as EventArguments)
+                      .event,
+            ),
+        '/events/friend/edit': (context) => MakeEventPage(
+              eventType: EventType.friend,
+              restorationId: "friendEvent",
+              event:
+                  (ModalRoute.of(context)!.settings.arguments as EventArguments)
+                      .event,
+            ),
+        '/events/private/edit': (context) => MakeEventPage(
+              eventType: EventType.private,
+              restorationId: "privateEvent",
+              event:
+                  (ModalRoute.of(context)!.settings.arguments as EventArguments)
+                      .event,
             ),
         '/events': (context) => const EventsPage(),
         '/friends': (context) => const FriendsPage(),
