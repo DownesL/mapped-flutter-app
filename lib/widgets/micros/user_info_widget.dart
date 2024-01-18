@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mapped/models/mapped_user.dart';
 import 'package:mapped/widgets/micros/profile_pic.dart';
-import 'package:mapped/widgets/micros/qr_code.dart';
 import 'package:mapped/widgets/micros/qr_code_popup.dart';
 import 'package:provider/provider.dart';
 

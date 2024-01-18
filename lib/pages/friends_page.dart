@@ -61,7 +61,7 @@ class _FriendsPageState extends State<FriendsPage> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               if (isLoading)
-                CircularProgressIndicator()
+                const CircularProgressIndicator()
               else if (pendingRequests.isEmpty)
                 const Text("No pending requests")
               else

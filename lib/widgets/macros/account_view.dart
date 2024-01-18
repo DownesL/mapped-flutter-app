@@ -57,7 +57,7 @@ class _AccountViewState extends State<AccountView> {
                 label: const Text('Edit'),
                 onPressed: () => Navigator.pushNamed(context, '/account/edit'),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton.icon(
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(
