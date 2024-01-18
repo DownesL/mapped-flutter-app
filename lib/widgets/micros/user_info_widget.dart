@@ -4,8 +4,6 @@ import 'package:mapped/widgets/micros/profile_pic.dart';
 import 'package:mapped/widgets/micros/qr_code_popup.dart';
 import 'package:provider/provider.dart';
 
-
-
 class UserInfoWidget extends StatelessWidget {
   const UserInfoWidget({super.key, this.size = 50, this.mappedUser});
 
@@ -16,14 +14,12 @@ class UserInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var mUser = mappedUser ?? context.watch<MappedUser>();
 
-
     return Expanded(
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           ProfilePic(size: size),
           const SizedBox(width: 16.0),
-          if (mappedUser != null && mappedUser!.isNotEmpty)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -41,6 +37,4 @@ class UserInfoWidget extends StatelessWidget {
       ),
     );
   }
-
-
 }
