@@ -5,7 +5,7 @@ class FilterOptions extends ChangeNotifier {
   late int limit;
 
   FilterOptions() {
-    after = DateTime.now().subtract(Duration(days: 1));
+    after = DateTime.now().subtract(const Duration(days: 1));
     limit = 25;
   }
 

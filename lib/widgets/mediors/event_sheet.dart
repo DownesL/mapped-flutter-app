@@ -78,9 +78,10 @@ class _EventSheetState extends State<EventSheet> {
   void share() async {
     final box = context.findRenderObject() as RenderBox;
     await Share.share(
-        "Check out this event on the Mapped App: https://mapped.app/events/${event.eid}",
-        subject: "Hello",
-        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+      "Check out this event on the Mapped App: https://mapped.app/events/${event.eid}",
+      subject: "Hello",
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+    );
   }
 
   @override
@@ -184,7 +185,6 @@ class _EventSheetState extends State<EventSheet> {
                       ),
                     ),
                   ),
-                  //todo: this link
                   onPressed: share,
                   icon: Icon(
                     Icons.share,
@@ -215,8 +215,7 @@ class _EventSheetState extends State<EventSheet> {
                       width: 4,
                     ),
                     TextButton(
-                      onPressed: () {},
-                      child: const Text("Edit event"),
+                      onPressed: () => Navigator.pushNamed(context, '/events/${event.eventType.value.toLowerCase()}/edit', arguments: EventArguments(event: event)),
                       style: ButtonStyle(
                           foregroundColor: MaterialStatePropertyAll(
                               Theme.of(context).colorScheme.tertiary),
@@ -227,6 +226,7 @@ class _EventSheetState extends State<EventSheet> {
                                       color: Theme.of(context)
                                           .colorScheme
                                           .tertiary)))),
+                      child: const Text("Edit event"),
                     )
                   ],
                 )

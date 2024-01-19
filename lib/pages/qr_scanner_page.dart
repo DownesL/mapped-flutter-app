@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mapped/firebase_service.dart';
 import 'package:mapped/models/event.dart';
@@ -9,14 +8,13 @@ import 'package:mapped/models/mapped_user.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRScannerPage extends StatefulWidget {
-  const QRScannerPage({Key? key}) : super(key: key);
+  const QRScannerPage({super.key});
 
   @override
   State<StatefulWidget> createState() => _QRScannerPageState();
 }
 
 class _QRScannerPageState extends State<QRScannerPage> {
-  //todo: style this shit
   String? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -45,14 +43,14 @@ class _QRScannerPageState extends State<QRScannerPage> {
               fit: BoxFit.fitWidth,
               child: Row(
                 children: <Widget>[
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   ),
                   if (result != null)
                     Text(result!)
                   else
                     const Text('Scan a code'),
-                  SizedBox(
+                  const SizedBox(
                     width: 16,
                   )
                 ],

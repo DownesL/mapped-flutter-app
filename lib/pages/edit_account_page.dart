@@ -144,7 +144,7 @@ class _AccountPageState extends State<AccountPage> {
                                         _retrieveDataError,
                                         _pickImageError,
                                       ) ??
-                                      ProfilePic(size: 100);
+                                      const ProfilePic(size: 100);
                                 case ConnectionState.active:
                                   if (snapshot.hasError) {
                                     return Text(
@@ -166,7 +166,7 @@ class _AccountPageState extends State<AccountPage> {
                               _retrieveDataError,
                               _pickImageError,
                             ) ??
-                            ProfilePic(size: 100),
+                            const ProfilePic(size: 100),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -238,7 +238,7 @@ class _AccountPageState extends State<AccountPage> {
                   value: newLabels,
                   child: const ColorSelection(),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 64,
                 ),
                 Row(

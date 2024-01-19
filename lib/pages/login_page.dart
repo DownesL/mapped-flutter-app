@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
           }
         }
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       emailController.clear();
       passwordController.clear();
       wrongCredentials = true;

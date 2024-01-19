@@ -38,7 +38,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
   String? dateErrorMessage;
 
   final RestorableDateTime _selectedStartDate =
-      RestorableDateTime(DateTime.now().add(Duration(minutes: 15)));
+      RestorableDateTime(DateTime.now().add(const Duration(minutes: 15)));
   late final RestorableRouteFuture<DateTime?>
       _restorableStartDatePickerRouteFuture = RestorableRouteFuture<DateTime?>(
     onComplete: _selectStartDate,
@@ -303,7 +303,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                       decoration: InputDecoration(
                         labelText: 'Title:',
                         floatingLabelStyle: TextStyle(color: color),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: color),
                         ),
@@ -420,7 +420,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                       decoration: InputDecoration(
                         labelText: 'Description:',
                         floatingLabelStyle: TextStyle(color: color),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: color),
                         ),
@@ -451,7 +451,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                       decoration: InputDecoration(
                         labelText: 'Address:',
                         floatingLabelStyle: TextStyle(color: color),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: color),
                         ),
@@ -505,7 +505,7 @@ class _MakeEventPageState extends State<MakeEventPage> with RestorationMixin {
                       decoration: InputDecoration(
                         labelText: 'Number:',
                         floatingLabelStyle: TextStyle(color: color),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: color),
                         ),

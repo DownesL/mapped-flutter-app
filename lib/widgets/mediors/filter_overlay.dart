@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -97,7 +96,7 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
           borderRadius: BorderRadius.circular(20),
         ),
         width: MediaQuery.sizeOf(context).width * .9,
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         margin: EdgeInsets.symmetric(
           vertical: MediaQuery.sizeOf(context).height * .2,
           horizontal: MediaQuery.sizeOf(context).width * .1,
@@ -109,8 +108,8 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
               'Set Filter parameters',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            SizedBox(height: 16,),
-            SizedBox(height: 16,),
+            const SizedBox(height: 16,),
+            const SizedBox(height: 16,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -126,7 +125,7 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
                 ),
               ],
             ),
-            SizedBox(height: 16,),
+            const SizedBox(height: 16,),
             TextFormField(
               controller: _limitController,
               keyboardType: TextInputType.number,
@@ -139,15 +138,16 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
                 if (intValue < 1 && 100 < intValue) {
                   return "Please fill in a number between 0 and 100";
                 }
+                return null;
               },
             ),
-            SizedBox(height: 16,),
-            SizedBox(height: 8,),
+            const SizedBox(height: 16,),
+            const SizedBox(height: 8,),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                if (isLoading) CircularProgressIndicator(),
-                Spacer(),
+                if (isLoading) const CircularProgressIndicator(),
+                const Spacer(),
                 OutlinedButton(
                   style: ButtonStyle(
                     side: MaterialStatePropertyAll(
@@ -159,7 +159,7 @@ class _FilterOverlayState extends State<FilterOverlay>  with RestorationMixin {
                   child: const Text('Cancel'),
                   onPressed: () => widget.closeFunction(),
                 ),
-                SizedBox(width: 8.0,),
+                const SizedBox(width: 8.0,),
                 FilledButton(
                   child: const Text('Save'),
                   onPressed: () {
