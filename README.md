@@ -16,25 +16,4 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 
-## TODO
-- [ ] functionalities
-    * [ ] events
-        * [x] add time input and change location search to: https://pub.dev/packages/textfield_search
-        * [2/3] edit events
-          * [x] photos
-          * [x] general edit
-          * [ ] general edit - testing
-        * [x] join events
-    * [x] Share button
-    * [x] Map 
-      * Filters
-    * [x] user sheet show friends:
-        * public events
-        * friend events
-    * [ ] deep linking
-    * [ ] clean up Mappeduser
-- [ ] fix styling
-    * [ ] account page
-    * [x] home
-- [ ] ux
-     * [x] Launch Icon
+# git: https://gitlab.com/ikdoeict/lukas.downes/2324-ad-mapped
